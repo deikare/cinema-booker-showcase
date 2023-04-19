@@ -10,6 +10,8 @@ public class SeatsRow {
     @Id
     private Long id;
 
+    private long position;
+
     @OneToMany(mappedBy = "row", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<Seat> seats = new HashSet<>();
 

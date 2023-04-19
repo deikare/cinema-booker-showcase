@@ -2,13 +2,14 @@ package com.example.cinemabooker.model;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Seat {
-    @Id //todo check if auto increment is possible
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    private long position;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "seats_row_id")
@@ -18,7 +19,16 @@ public class Seat {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
+
     public Seat() {
 
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
