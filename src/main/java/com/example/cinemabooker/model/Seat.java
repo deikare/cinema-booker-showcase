@@ -15,6 +15,9 @@ public class Seat extends AbstractEntity {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
+    @Enumerated
+    private SeatType type;
+
 
     public Seat() {
 
@@ -38,5 +41,21 @@ public class Seat extends AbstractEntity {
 
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
+    }
+
+    public long getPosition() {
+        return position;
+    }
+
+    public void setPosition(long position) {
+        this.position = position;
+    }
+
+    public SeatType getType() {
+        return type;
+    }
+
+    public void setType(SeatType type) {
+        this.type = type;
     }
 }
