@@ -4,11 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-public class Seat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
+public class Seat extends AbstractEntity {
     private long position;
 
     @ManyToOne(optional = false)
@@ -26,14 +22,6 @@ public class Seat {
 
     public Seat(long position) {
         this.position = position;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public SeatsRow getRow() {

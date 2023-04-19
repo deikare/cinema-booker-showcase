@@ -6,11 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Movie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
+public class Movie extends AbstractEntity {
     private String title;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "movie")
@@ -21,14 +17,6 @@ public class Movie {
 
     public Movie(String title) {
         this.title = title;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void addScreening(Screening screening) {

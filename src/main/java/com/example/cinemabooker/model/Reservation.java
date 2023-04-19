@@ -5,11 +5,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-public class Reservation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
+public class Reservation extends AbstractEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "screening_id")
     private Screening screening;
@@ -19,13 +15,5 @@ public class Reservation {
     private String reserverSurname;
 
     public Reservation() {
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 }

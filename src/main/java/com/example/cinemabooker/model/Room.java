@@ -6,11 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Room {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
+public class Room extends AbstractEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
@@ -26,14 +22,6 @@ public class Room {
 
     public Room() {
 
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Cinema getCinema() {

@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Screening {
-    @Id
-    @GeneratedValue
-    private Long id;
-
+public class Screening extends AbstractEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "movie_id")
     private Movie movie;
@@ -61,16 +57,6 @@ public class Screening {
             newRow.addSeat(new Seat(seatsNumber));
 
         seatsRows.add(newRow);
-    }
-
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Room getRoom() {

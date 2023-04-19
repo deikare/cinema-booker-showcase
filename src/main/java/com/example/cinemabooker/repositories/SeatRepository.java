@@ -2,6 +2,9 @@ package com.example.cinemabooker.repositories;
 
 import com.example.cinemabooker.model.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface SeatRepository extends JpaRepository<Seat, Long> {
+@Repository
+
+public interface SeatRepository extends JpaRepository<Seat, String> {
 }

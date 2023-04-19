@@ -6,10 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class SeatsRow {
-    @Id
-    private Long id;
-
+public class SeatsRow extends AbstractEntity {
     private long position;
 
     @OneToMany(mappedBy = "row", orphanRemoval = true, cascade = CascadeType.ALL)
@@ -25,14 +22,6 @@ public class SeatsRow {
     public SeatsRow(long position, Screening screening) {
         this.position = position;
         this.screening = screening;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void addSeat(Seat seat) {
