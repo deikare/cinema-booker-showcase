@@ -7,7 +7,7 @@ import java.time.Instant;
 @Entity
 public class Reservation {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne(optional = false)
@@ -17,6 +17,9 @@ public class Reservation {
     private Instant expirationTime;
     private String reserverName;
     private String reserverSurname;
+
+    public Reservation() {
+    }
 
     public void setId(Long id) {
         this.id = id;

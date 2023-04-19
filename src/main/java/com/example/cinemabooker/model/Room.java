@@ -11,7 +11,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
 
@@ -20,8 +20,7 @@ public class Room {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "room")
     Set<Screening> screenings = new HashSet<>();
 
-    public Room(Cinema cinema, Long roomNumber) {
-        this.cinema = cinema;
+    public Room(Long roomNumber) {
         this.roomNumber = roomNumber;
     }
 
@@ -35,5 +34,18 @@ public class Room {
 
     public Long getId() {
         return id;
+    }
+
+    public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
+
+    public void addScreening(Screening screening) {
+        screenings.add(screening);
+        screening.setRoom(this);
     }
 }

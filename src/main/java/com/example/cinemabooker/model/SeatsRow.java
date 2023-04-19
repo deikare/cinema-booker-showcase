@@ -19,11 +19,24 @@ public class SeatsRow {
     @JoinColumn(name = "screening_id")
     private Screening screening;
 
+    public SeatsRow() {
+    }
+
+    public SeatsRow(long position, Screening screening) {
+        this.position = position;
+        this.screening = screening;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void addSeat(Seat seat) {
+        seats.add(seat);
+        seat.setRow(this);
     }
 }

@@ -24,11 +24,31 @@ public class Seat {
 
     }
 
+    public Seat(long position) {
+        this.position = position;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public SeatsRow getRow() {
+        return row;
+    }
+
+    public void setRow(SeatsRow row) {
+        this.row = row;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }
