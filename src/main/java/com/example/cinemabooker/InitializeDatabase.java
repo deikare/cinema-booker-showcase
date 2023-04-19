@@ -17,9 +17,9 @@ public class InitializeDatabase {
     CommandLineRunner initDatabase(CinemaRepository cinemaRepository, MovieRepository movieRepository, ReservationRepository reservationRepository, RoomRepository roomRepository, ScreeningRepository screeningRepository, SeatRepository seatRepository, SeatsRowRepository seatsRowRepository) {
         return args -> {
             Cinema cinema = new Cinema();
-            logger.info(cinema.toString());
             cinema = cinemaRepository.save(cinema);
-            logger.info(cinema.toString());
+
+
         };
     }
 }
