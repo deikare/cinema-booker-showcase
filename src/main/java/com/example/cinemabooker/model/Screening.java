@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,34 +30,6 @@ public class Screening extends AbstractEntity {
         this.screeningTime = screeningTime;
     }
 
-    public Screening(Movie movie, Room room, Instant screeningTime, long rowsNumber, long columnsNumber) {
-        this.movie = movie;
-        this.room = room;
-        this.screeningTime = screeningTime;
-
-        for (long row = 1; row <= rowsNumber; row++) {
-            addSeatsInRow(row, columnsNumber);
-        }
-    }
-
-    public Screening(Movie movie, Room room, Instant screeningTime, Long[] rowNumbers) {
-        this.movie = movie;
-        this.room = room;
-        this.screeningTime = screeningTime;
-
-        int n = rowNumbers.length;
-        for (int rowNumber = 1; rowNumber <= n; rowNumber++)
-            addSeatsInRow(rowNumber, rowNumbers[rowNumber - 1]);
-    }
-
-    private void addSeatsInRow(long rowPosition, long seatsNumber) {
-        SeatsRow newRow = new SeatsRow(rowPosition, this);
-        for (long column = 1; column <= seatsNumber; column++)
-            newRow.addSeat(new Seat(seatsNumber));
-
-        seatsRows.add(newRow);
-    }
-
     public Room getRoom() {
         return room;
     }
@@ -73,5 +44,20 @@ public class Screening extends AbstractEntity {
 
     public void setMovie(Movie movie) {
         this.movie = movie;
+    }
+
+    public void addSeatsRow(SeatsRow seatsRow) {
+        seatsRows.add(seatsRow);
+        seatsRow.setScreening(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Screening{" +
+                "movie=" + movie +
+                ", room=" + room +
+                ", screeningTime=" + screeningTime +
+                ", id='" + id + '\'' +
+                "} ";
     }
 }

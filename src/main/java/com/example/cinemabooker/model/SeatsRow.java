@@ -19,13 +19,20 @@ public class SeatsRow extends AbstractEntity {
     public SeatsRow() {
     }
 
-    public SeatsRow(long position, Screening screening) {
+    public SeatsRow(long position) {
         this.position = position;
-        this.screening = screening;
     }
 
     public void addSeat(Seat seat) {
         seats.add(seat);
         seat.setRow(this);
+    }
+
+    public Screening getScreening() {
+        return screening;
+    }
+
+    public void setScreening(Screening screening) {
+        this.screening = screening;
     }
 }
