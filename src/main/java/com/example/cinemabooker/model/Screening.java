@@ -58,7 +58,7 @@ public class Screening extends AbstractEntity implements EntityUpdateInterface<S
                 "movie=" + movie +
                 ", room=" + room +
                 ", screeningTime=" + screeningTime +
-                ", id='" + id + '\'' +
+                ", id='" + entityId + '\'' +
                 "} ";
     }
 

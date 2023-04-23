@@ -1,6 +1,6 @@
 package com.example.cinemabooker.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
@@ -10,17 +10,18 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class AbstractEntity {
     @Id
-    protected String id = UUID.randomUUID().toString();
+    @Column(name = "id")
+    protected String entityId = UUID.randomUUID().toString(); //cannot be named id because of https://github.com/spring-projects/spring-hateoas/issues/67
 
     public AbstractEntity() {
     }
 
     public String getId() {
-        return id;
+        return entityId;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.entityId = id;
     }
 
     @Override
@@ -28,11 +29,11 @@ public abstract class AbstractEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AbstractEntity that = (AbstractEntity) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(entityId, that.entityId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(entityId);
     }
 }

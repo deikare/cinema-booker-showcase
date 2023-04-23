@@ -10,6 +10,7 @@ public class Cinema extends AbstractEntity {
     @OneToMany(mappedBy = "cinema", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Room> rooms = new HashSet<>();
 
+
     public Cinema() {
     }
 
@@ -21,7 +22,7 @@ public class Cinema extends AbstractEntity {
     @Override
     public String toString() {
         return "Cinema{" +
-                "id=" + id +
+                "id=" + entityId +
                 '}';
     }
 }
