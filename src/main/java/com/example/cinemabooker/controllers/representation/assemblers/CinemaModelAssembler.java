@@ -1,7 +1,7 @@
 package com.example.cinemabooker.controllers.representation.assemblers;
 
 import com.example.cinemabooker.controllers.CinemaController;
-import com.example.cinemabooker.controllers.representation.ControllerDefaults;
+import com.example.cinemabooker.controllers.ControllerDefaults;
 import com.example.cinemabooker.model.Cinema;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;

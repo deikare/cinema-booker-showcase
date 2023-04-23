@@ -1,6 +1,5 @@
 package com.example.cinemabooker.controllers;
 
-import com.example.cinemabooker.controllers.representation.ControllerDefaults;
 import com.example.cinemabooker.controllers.representation.assemblers.CinemaModelAssembler;
 import com.example.cinemabooker.model.Cinema;
 import com.example.cinemabooker.services.NotFoundException;

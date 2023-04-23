@@ -6,3 +6,9 @@ Siedzenie z screeningiem, id rezerwacji, pozycja xy czy coś
 Rezerwacja z imieniem i nazwiskiem usera, listą siedzeń, datą ekspiracji, typ - student, zwykły, uczeń
 
 Czy user składa zamówienie z konta, czy jest po prostu po imieniu i nazwisku
+
+list endpointów
+GET, POST, DELETE
+/cinemas
+/cinemas/{id}/rooms
+GET, POST,

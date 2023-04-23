@@ -1,4 +1,4 @@
-package com.example.cinemabooker.controllers.representation;
+package com.example.cinemabooker.controllers;
 
 public final class ControllerDefaults {
     private ControllerDefaults() {
