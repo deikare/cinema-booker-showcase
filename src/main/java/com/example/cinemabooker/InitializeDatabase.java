@@ -5,6 +5,7 @@ import com.example.cinemabooker.model.Movie;
 import com.example.cinemabooker.model.Room;
 import com.example.cinemabooker.model.Screening;
 import com.example.cinemabooker.repositories.*;
+import com.example.cinemabooker.services.CinemaService;
 import com.example.cinemabooker.services.ScreeningService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,19 +27,19 @@ public class InitializeDatabase {
     private static final Logger logger = LoggerFactory.getLogger(InitializeDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(CinemaRepository cinemaRepository, MovieRepository movieRepository, ReservationRepository reservationRepository, RoomRepository roomRepository, ScreeningService screeningService, SeatRepository seatRepository, SeatsRowRepository seatsRowRepository) {
+    CommandLineRunner initDatabase(CinemaService cinemaService, MovieRepository movieRepository, ReservationRepository reservationRepository, RoomRepository roomRepository, ScreeningService screeningService, SeatRepository seatRepository, SeatsRowRepository seatsRowRepository) {
         return args -> {
             Cinema cinema = new Cinema();
-            cinemaRepository.save(cinema);
+            cinemaService.save(cinema);
 
-            logger.info(cinemaRepository.findAll().toString());
+            logger.info(cinemaService.findAll().toString());
 
             Long[] entityNumbers = {1L, 2L, 3L};
 
             ArrayList<Room> rooms = Arrays.stream(entityNumbers).map(roomNumber -> {
                 Room room = new Room(roomNumber);
                 cinema.addRoom(room);
-                cinemaRepository.save(cinema);
+                cinemaService.save(cinema);
                 return roomRepository.save(room);
             }).collect(Collectors.toCollection(ArrayList::new));
 
@@ -63,7 +64,7 @@ public class InitializeDatabase {
             }
 
 //            logger.info(screeningService.getScreeningPage(0, 10000).toString());
-            logger.info(screeningService.findAll().stream().map(screening -> screening.toString()).toList().toString());
+            logger.info(screeningService.findAll(0, 100).toString());
         };
     }
 }
