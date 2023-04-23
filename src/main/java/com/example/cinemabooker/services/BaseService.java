@@ -19,7 +19,7 @@ public class BaseService<T> {
     }
 
     public void delete(String id) throws NotFoundException {
-        repository.delete(findOf(id));
+        repository.delete(find(id));
     }
 
     public Page<T> findAll(int page, int size) {
@@ -27,7 +27,7 @@ public class BaseService<T> {
         return repository.findAll(pageable);
     }
 
-    public T findOf(String id) throws NotFoundException {
+    public T find(String id) throws NotFoundException {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Entity{" + id + "} not found"));
     }
 

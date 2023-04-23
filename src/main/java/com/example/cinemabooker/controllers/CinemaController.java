@@ -8,7 +8,6 @@ import com.example.cinemabooker.services.CinemaService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,12 +40,24 @@ public class CinemaController {
         Cinema cinema;
 
         try {
-            cinema = cinemaService.findOf(id);
+            cinema = cinemaService.find(id);
         }
         catch (NotFoundException e) {
             throw e;
         }
 
         return cinemaModelAssembler.toModel(cinema);
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> delete(@PathVariable String id) {
+        try {
+            cinemaService.delete(id);
+        }
+        catch (NotFoundException e) {
+            throw e;
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
