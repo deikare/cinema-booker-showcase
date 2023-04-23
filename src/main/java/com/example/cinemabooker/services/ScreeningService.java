@@ -2,8 +2,6 @@ package com.example.cinemabooker.services;
 
 import com.example.cinemabooker.model.*;
 import com.example.cinemabooker.repositories.ScreeningRepository;
-import com.example.cinemabooker.repositories.SeatRepository;
-import com.example.cinemabooker.repositories.SeatsRowRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +10,13 @@ import java.util.function.Function;
 
 @Service
 public class ScreeningService extends BaseServiceWithUpdate<Screening> {
-    private final SeatsRowRepository seatsRowRepository;
-    private final SeatRepository seatRepository;
+    private final SeatsRowService seatsRowService;
+    private final SeatService seatService;
 
-    public ScreeningService(ScreeningRepository screeningRepository, SeatsRowRepository seatsRowRepository, SeatRepository seatRepository) {
+    public ScreeningService(ScreeningRepository screeningRepository, SeatsRowService seatsRowService, SeatService seatService) {
         super(screeningRepository, LoggerFactory.getLogger(ScreeningService.class));
-        this.seatsRowRepository = seatsRowRepository;
-        this.seatRepository = seatRepository;
+        this.seatsRowService = seatsRowService;
+        this.seatService = seatService;
     }
 
     public void createScreening(Movie movie, Room room, Instant screeningTime, long rowsNumber, long columnsNumber) {
@@ -42,12 +40,12 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening> {
     private void createRowWithSeats(Screening screening, long rowPosition, long seatsNumber) {
         SeatsRow newRow = new SeatsRow(rowPosition);
         screening.addSeatsRow(newRow);
-        seatsRowRepository.save(newRow);
+        seatsRowService.save(newRow);
 
         for (long column = 1; column <= seatsNumber; column++) {
             Seat newSeat = new Seat(seatsNumber);
             newRow.addSeat(newSeat);
-            seatRepository.save(newSeat);
+            seatService.save(newSeat);
         }
     }
 }

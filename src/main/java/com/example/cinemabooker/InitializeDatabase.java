@@ -24,15 +24,11 @@ import java.util.stream.Collectors;
 
 @Configuration
 public class InitializeDatabase {
-    private static final Logger logger = LoggerFactory.getLogger(InitializeDatabase.class);
-
     @Bean
-    CommandLineRunner initDatabase(CinemaService cinemaService, MovieRepository movieRepository, ReservationRepository reservationRepository, RoomRepository roomRepository, ScreeningService screeningService, SeatRepository seatRepository, SeatsRowRepository seatsRowRepository) {
+    CommandLineRunner initDatabase(CinemaService cinemaService, MovieRepository movieRepository, ReservationRepository reservationRepository, RoomRepository roomRepository, ScreeningService screeningService) {
         return args -> {
             Cinema cinema = new Cinema();
             cinemaService.save(cinema);
-
-            logger.info(cinemaService.findAll().toString());
 
             Long[] entityNumbers = {1L, 2L, 3L};
 
@@ -43,14 +39,10 @@ public class InitializeDatabase {
                 return roomRepository.save(room);
             }).collect(Collectors.toCollection(ArrayList::new));
 
-            logger.info(roomRepository.findAll().toString());
-
             ArrayList<Movie> movies = Arrays.stream(entityNumbers).map(movieNumber -> {
                 Movie movie = new Movie("m" + movieNumber);
                 return movieRepository.save(movie);
             }).collect(Collectors.toCollection(ArrayList::new));
-
-            logger.info(movies.toString());
 
             Collections.shuffle(movies);
             int i = 0;
@@ -62,9 +54,6 @@ public class InitializeDatabase {
                         i = 0;
                 }
             }
-
-//            logger.info(screeningService.getScreeningPage(0, 10000).toString());
-            logger.info(screeningService.findAll(0, 100).toString());
         };
     }
 }
