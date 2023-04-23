@@ -4,6 +4,7 @@ import com.example.cinemabooker.model.*;
 import com.example.cinemabooker.repositories.ScreeningRepository;
 import com.example.cinemabooker.repositories.SeatRepository;
 import com.example.cinemabooker.repositories.SeatsRowRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,7 +16,7 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening> {
     private final SeatRepository seatRepository;
 
     public ScreeningService(ScreeningRepository screeningRepository, SeatsRowRepository seatsRowRepository, SeatRepository seatRepository) {
-        super(screeningRepository);
+        super(screeningRepository, LoggerFactory.getLogger(ScreeningService.class));
         this.seatsRowRepository = seatsRowRepository;
         this.seatRepository = seatRepository;
     }
