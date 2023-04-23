@@ -2,8 +2,9 @@ package com.example.cinemabooker.controllers;
 
 import com.example.cinemabooker.controllers.representation.assemblers.CinemaModelAssembler;
 import com.example.cinemabooker.model.Cinema;
-import com.example.cinemabooker.services.NotFoundException;
 import com.example.cinemabooker.services.CinemaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/cinemas")
 public class CinemaController {
+    private final Logger logger = LoggerFactory.getLogger(CinemaController.class);
     private final CinemaService cinemaService;
     private final PagedResourcesAssembler<Cinema> pagedResourcesAssembler;
     private final CinemaModelAssembler cinemaModelAssembler;
@@ -28,35 +30,19 @@ public class CinemaController {
     @GetMapping
     public ResponseEntity<PagedModel<EntityModel<Cinema>>> all(@RequestParam(defaultValue = ControllerDefaults.PAGE_NUMBER_AS_STRING) int page, @RequestParam(defaultValue = ControllerDefaults.PAGE_SIZE_AS_STRING) int size) {
         Page<Cinema> cinemas = cinemaService.findAll(page, size);
-
         PagedModel<EntityModel<Cinema>> cinemasView = pagedResourcesAssembler.toModel(cinemas, cinemaModelAssembler);
-
         return new ResponseEntity<>(cinemasView, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public EntityModel<Cinema> one(@PathVariable String id) {
-        Cinema cinema;
-
-        try {
-            cinema = cinemaService.find(id);
-        }
-        catch (NotFoundException e) {
-            throw e;
-        }
-
+        Cinema cinema = cinemaService.find(id);
         return cinemaModelAssembler.toModel(cinema);
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<?> delete(@PathVariable String id) {
-        try {
-            cinemaService.delete(id);
-        }
-        catch (NotFoundException e) {
-            throw e;
-        }
-
+        cinemaService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
