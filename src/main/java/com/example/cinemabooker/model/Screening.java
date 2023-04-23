@@ -1,5 +1,6 @@
 package com.example.cinemabooker.model;
 
+import com.example.cinemabooker.services.EntityUpdateInterface;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -7,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Screening extends AbstractEntity {
+public class Screening extends AbstractEntity implements EntityUpdateInterface<Screening> {
     @ManyToOne(optional = false)
     @JoinColumn(name = "movie_id")
     private Movie movie;
@@ -59,5 +60,10 @@ public class Screening extends AbstractEntity {
                 ", screeningTime=" + screeningTime +
                 ", id='" + id + '\'' +
                 "} ";
+    }
+
+    @Override
+    public void update(Screening entity) {
+//TODO
     }
 }

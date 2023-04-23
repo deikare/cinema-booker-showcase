@@ -4,23 +4,18 @@ import com.example.cinemabooker.model.*;
 import com.example.cinemabooker.repositories.ScreeningRepository;
 import com.example.cinemabooker.repositories.SeatRepository;
 import com.example.cinemabooker.repositories.SeatsRowRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.function.Function;
 
 @Service
-public class ScreeningService {
-    private final ScreeningRepository screeningRepository;
+public class ScreeningService extends BaseServiceWithUpdate<Screening> {
     private final SeatsRowRepository seatsRowRepository;
     private final SeatRepository seatRepository;
 
     public ScreeningService(ScreeningRepository screeningRepository, SeatsRowRepository seatsRowRepository, SeatRepository seatRepository) {
-        this.screeningRepository = screeningRepository;
+        super(screeningRepository);
         this.seatsRowRepository = seatsRowRepository;
         this.seatRepository = seatRepository;
     }
@@ -35,15 +30,13 @@ public class ScreeningService {
 
     private void createScreening(Movie movie, Room room, Instant screeningTime, long rowsNumber, Function<Integer, Long> seatsInRowNumberSupplier) {
         Screening screening = new Screening(movie, room, screeningTime);
-        screening = screeningRepository.save(screening);
+        screening = repository.save(screening);
 
         for (int rowNumber = 1; rowNumber <= rowsNumber; rowNumber++)
             createRowWithSeats(screening, rowNumber, seatsInRowNumberSupplier.apply(rowNumber));
 
-        screeningRepository.save(screening);
+        repository.save(screening);
     }
-
-//    private void createScreening(Movie movie, Room room, Instant screeningTime, )
 
     private void createRowWithSeats(Screening screening, long rowPosition, long seatsNumber) {
         SeatsRow newRow = new SeatsRow(rowPosition);
@@ -56,14 +49,4 @@ public class ScreeningService {
             seatRepository.save(newSeat);
         }
     }
-
-    public Page<Screening> findAll(int page, int size) {
-        Pageable pageRequest = PageRequest.of(page, size);
-        return screeningRepository.findAll(pageRequest);
-    }
-
-    public List<Screening> findAll() {
-        return screeningRepository.findAll();
-    }
-
 }
