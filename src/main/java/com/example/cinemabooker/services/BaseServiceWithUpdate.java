@@ -1,5 +1,6 @@
 package com.example.cinemabooker.services;
 
+import com.example.cinemabooker.services.interfaces.EntityUpdateInterface;
 import org.slf4j.Logger;
 import org.springframework.data.jpa.repository.JpaRepository;
 

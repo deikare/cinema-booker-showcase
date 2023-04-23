@@ -1,5 +1,8 @@
 package com.example.cinemabooker.services;
 
+import com.example.cinemabooker.services.interfaces.EntityInterface;
+import com.example.cinemabooker.services.exceptions.IdAlreadyDefinedException;
+import com.example.cinemabooker.services.exceptions.NotFoundException;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,13 +11,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public abstract class BaseService<T> {
+public abstract class BaseService<T extends EntityInterface> {
     protected final JpaRepository<T, String> repository;
     protected final Logger logger;
 
     public BaseService(JpaRepository<T, String> repository, Logger logger) {
         this.repository = repository;
         this.logger = logger;
+    }
+
+    public T create(T entity) throws IdAlreadyDefinedException {
+        if (entity.getId() != null) {
+            String msg = "Id of entity has been set";
+            logger.info(msg);
+            throw new IdAlreadyDefinedException(msg);
+        }
+        return save(entity);
     }
 
     public T save(T entity) {

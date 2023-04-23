@@ -1,12 +1,13 @@
 package com.example.cinemabooker.model;
 
+import com.example.cinemabooker.services.interfaces.EntityInterface;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Room extends AbstractEntity {
+public class Room extends AbstractEntity implements EntityInterface {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;

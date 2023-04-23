@@ -1,10 +1,11 @@
 package com.example.cinemabooker.model;
 
+import com.example.cinemabooker.services.interfaces.EntityInterface;
 import jakarta.persistence.*;
 
 
 @Entity
-public class Seat extends AbstractEntity {
+public class Seat extends AbstractEntity implements EntityInterface {
     private long position;
 
     @ManyToOne(optional = false)

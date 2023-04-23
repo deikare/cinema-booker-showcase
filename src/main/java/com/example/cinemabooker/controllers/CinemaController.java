@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,17 @@ public class CinemaController {
         logger.info("Received request get one entity: id=" + id);
         Cinema cinema = cinemaService.find(id);
         return cinemaModelAssembler.toModel(cinema);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> newEntity(@RequestBody Cinema cinema) {
+        logger.info("Received request post entity" + cinema);
+
+        EntityModel<Cinema> entityModel = cinemaModelAssembler.toModel(cinemaService.create(cinema));
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @DeleteMapping("/{id}")

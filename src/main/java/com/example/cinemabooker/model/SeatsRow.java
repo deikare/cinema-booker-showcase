@@ -1,12 +1,13 @@
 package com.example.cinemabooker.model;
 
+import com.example.cinemabooker.services.interfaces.EntityInterface;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class SeatsRow extends AbstractEntity {
+public class SeatsRow extends AbstractEntity implements EntityInterface {
     private long position;
 
     @OneToMany(mappedBy = "row", orphanRemoval = true, cascade = CascadeType.ALL)

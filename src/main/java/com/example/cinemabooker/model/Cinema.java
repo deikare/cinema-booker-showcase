@@ -1,12 +1,13 @@
 package com.example.cinemabooker.model;
 
+import com.example.cinemabooker.services.interfaces.EntityInterface;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Cinema extends AbstractEntity {
+public class Cinema extends AbstractEntity implements EntityInterface {
     @OneToMany(mappedBy = "cinema", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Room> rooms = new HashSet<>();
 

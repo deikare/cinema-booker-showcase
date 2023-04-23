@@ -1,6 +1,6 @@
 package com.example.cinemabooker.model;
 
-import com.example.cinemabooker.services.EntityUpdateInterface;
+import com.example.cinemabooker.services.interfaces.EntityUpdateInterface;
 import jakarta.persistence.*;
 
 import java.time.Instant;

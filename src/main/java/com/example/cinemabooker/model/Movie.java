@@ -1,12 +1,13 @@
 package com.example.cinemabooker.model;
 
+import com.example.cinemabooker.services.interfaces.EntityInterface;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Movie extends AbstractEntity {
+public class Movie extends AbstractEntity implements EntityInterface {
     private String title;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "movie")
