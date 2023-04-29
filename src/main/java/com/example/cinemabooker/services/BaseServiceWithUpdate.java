@@ -5,8 +5,8 @@ import com.example.cinemabooker.services.interfaces.EntityUpdateInterface;
 import org.slf4j.Logger;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public class BaseServiceWithUpdate<T extends EntityUpdateInterface<T>> extends BaseService<T> {
-    public BaseServiceWithUpdate(JpaRepository<T, String> repository, Logger logger) {
+public abstract class BaseServiceWithUpdate<T extends EntityUpdateInterface<T>, R extends JpaRepository<T, String>> extends BaseService<T, R> {
+    public BaseServiceWithUpdate(R repository, Logger logger) {
         super(repository, logger);
     }
 

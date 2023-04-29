@@ -11,11 +11,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public abstract class BaseService<T extends EntityInterface> {
-    protected final JpaRepository<T, String> repository;
+public abstract class BaseService<T extends EntityInterface, R extends JpaRepository<T, String>> {
+    protected final R repository;
     protected final Logger logger;
 
-    public BaseService(JpaRepository<T, String> repository, Logger logger) {
+    public BaseService(R repository, Logger logger) {
         this.repository = repository;
         this.logger = logger;
     }

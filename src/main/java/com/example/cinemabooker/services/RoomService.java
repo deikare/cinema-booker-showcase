@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RoomService extends BaseService<Room> {
+public class RoomService extends BaseService<Room, RoomRepository> {
     public RoomService(RoomRepository repository) {
         super(repository, LoggerFactory.getLogger(RoomService.class));
     }

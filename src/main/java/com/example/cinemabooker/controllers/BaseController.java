@@ -4,6 +4,7 @@ import com.example.cinemabooker.services.BaseService;
 import com.example.cinemabooker.services.interfaces.EntityInterface;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -13,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-public abstract class BaseController<T extends EntityInterface, S extends BaseService<T>, A extends RepresentationModelAssembler<T, EntityModel<T>>> {
+public abstract class BaseController<T extends EntityInterface, R extends JpaRepository<T, String>, S extends BaseService<T, R>, A extends RepresentationModelAssembler<T, EntityModel<T>>> {
     protected final Logger logger;
     protected final S service;
     protected final PagedResourcesAssembler<T> pagedResourcesAssembler;
@@ -24,14 +25,6 @@ public abstract class BaseController<T extends EntityInterface, S extends BaseSe
         this.service = service;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
         this.modelAssembler = modelAssembler;
-    }
-
-    @GetMapping
-    public ResponseEntity<PagedModel<EntityModel<T>>> all(@RequestParam(defaultValue = ControllerDefaults.PAGE_NUMBER_AS_STRING) int page, @RequestParam(defaultValue = ControllerDefaults.PAGE_SIZE_AS_STRING) int size) {
-        Page<T> entityPage = service.findAll(page, size);
-        logger.info("Received request get paged entities: page=" + page + ", size=" + size);
-        PagedModel<EntityModel<T>> entitiesView = pagedResourcesAssembler.toModel(entityPage, modelAssembler);
-        return new ResponseEntity<>(entitiesView, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

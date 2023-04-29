@@ -2,6 +2,7 @@ package com.example.cinemabooker.controllers;
 
 import com.example.cinemabooker.controllers.representation.assemblers.CinemaModelAssembler;
 import com.example.cinemabooker.model.Cinema;
+import com.example.cinemabooker.repositories.CinemaRepository;
 import com.example.cinemabooker.services.CinemaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cinemas")
-public class CinemaController extends BaseController<Cinema, CinemaService, CinemaModelAssembler> {
+public class CinemaController extends BaseControllerWithGetAll<Cinema, CinemaRepository, CinemaService, CinemaModelAssembler> {
     public CinemaController(CinemaService service, PagedResourcesAssembler<Cinema> pagedResourcesAssembler, CinemaModelAssembler modelAssembler) {
         super(LoggerFactory.getLogger(CinemaController.class), service, pagedResourcesAssembler, modelAssembler);
     }

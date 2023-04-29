@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.function.Function;
 
 @Service
-public class ScreeningService extends BaseServiceWithUpdate<Screening> {
+public class ScreeningService extends BaseServiceWithUpdate<Screening, ScreeningRepository> {
     private final SeatsRowService seatsRowService;
     private final SeatService seatService;
 
