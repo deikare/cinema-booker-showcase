@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "Movies")
 public class Movie extends AbstractEntity implements EntityInterface {
     private String title;
 
@@ -25,4 +26,7 @@ public class Movie extends AbstractEntity implements EntityInterface {
         screening.setMovie(this);
     }
 
+    public String getTitle() {
+        return title;
+    }
 }

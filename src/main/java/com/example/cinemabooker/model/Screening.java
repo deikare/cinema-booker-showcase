@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "Screenings")
 public class Screening extends AbstractEntity implements EntityUpdateInterface<Screening> {
     @ManyToOne(optional = false)
     @JoinColumn(name = "movie_id")
@@ -30,11 +31,7 @@ public class Screening extends AbstractEntity implements EntityUpdateInterface<S
         this.room = room;
         this.screeningTime = screeningTime;
     }
-
-    public Room getRoom() {
-        return room;
-    }
-
+    
     public void setRoom(Room room) {
         this.room = room;
     }
@@ -50,6 +47,14 @@ public class Screening extends AbstractEntity implements EntityUpdateInterface<S
     public void addSeatsRow(SeatsRow seatsRow) {
         seatsRows.add(seatsRow);
         seatsRow.setScreening(this);
+    }
+
+    public Instant getScreeningTime() {
+        return screeningTime;
+    }
+
+    public void setScreeningTime(Instant screeningTime) {
+        this.screeningTime = screeningTime;
     }
 
     @Override

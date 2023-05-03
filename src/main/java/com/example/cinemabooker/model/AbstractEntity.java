@@ -1,5 +1,6 @@
 package com.example.cinemabooker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
@@ -16,6 +17,7 @@ public abstract class AbstractEntity {
     public AbstractEntity() {
     }
 
+    @JsonIgnore
     public String getId() {
         return entityId;
     }

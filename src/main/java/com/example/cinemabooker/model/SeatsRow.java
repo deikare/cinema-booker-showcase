@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "SeatsRows")
 public class SeatsRow extends AbstractEntity implements EntityInterface {
     private long position;
 

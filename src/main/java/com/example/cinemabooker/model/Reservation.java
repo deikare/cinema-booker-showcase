@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
+@Table(name = "Reservations")
 public class Reservation extends AbstractEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "screening_id")

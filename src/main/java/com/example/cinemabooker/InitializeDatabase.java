@@ -27,7 +27,7 @@ public class InitializeDatabase {
     @Bean
     CommandLineRunner initDatabase(CinemaService cinemaService, MovieRepository movieRepository, ReservationRepository reservationRepository, RoomRepository roomRepository, ScreeningService screeningService) {
         return args -> {
-            Cinema cinema = new Cinema();
+            Cinema cinema = new Cinema("c");
             cinemaService.save(cinema);
 
             Long[] entityNumbers = {1L, 2L, 3L};

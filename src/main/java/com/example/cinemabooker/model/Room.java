@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "Rooms")
 public class Room extends AbstractEntity implements EntityInterface {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "cinema_id")
@@ -36,5 +37,9 @@ public class Room extends AbstractEntity implements EntityInterface {
     public void addScreening(Screening screening) {
         screenings.add(screening);
         screening.setRoom(this);
+    }
+
+    public Long getRoomNumber() {
+        return roomNumber;
     }
 }

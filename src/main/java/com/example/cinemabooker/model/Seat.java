@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 
 @Entity
+@Table(name = "Seats")
 public class Seat extends AbstractEntity implements EntityInterface {
     private long position;
 

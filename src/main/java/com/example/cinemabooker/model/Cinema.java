@@ -7,12 +7,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "Cinemas")
 public class Cinema extends AbstractEntity implements EntityInterface {
+    private String name;
     @OneToMany(mappedBy = "cinema", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Room> rooms = new HashSet<>();
 
 
     public Cinema() {
+    }
+
+    public Cinema(String name) {
+        this.name = name;
     }
 
     public void addRoom(Room room) {
@@ -23,7 +29,12 @@ public class Cinema extends AbstractEntity implements EntityInterface {
     @Override
     public String toString() {
         return "Cinema{" +
-                "id=" + entityId +
-                '}';
+                "name='" + name + '\'' +
+                ", entityId='" + entityId + '\'' +
+                "} ";
+    }
+
+    public String getName() {
+        return name;
     }
 }
