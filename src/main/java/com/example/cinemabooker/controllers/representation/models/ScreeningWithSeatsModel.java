@@ -10,20 +10,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ScreeningWithSeatsModel extends RepresentationModel<ScreeningWithSeatsModel> {
-    private final String id;
     private final Instant screeningTime;
 
     private final List<SeatsRowModel> seatRows;
 
     public ScreeningWithSeatsModel(Screening screening) {
-        this.id = screening.getId();
         this.seatRows = new LinkedList<>();
         this.screeningTime = screening.getScreeningTime();
         screening.getSeatsRows().forEach(seatsRow -> this.seatRows.add(new SeatsRowModel(seatsRow)));
-    }
-
-    public String getId() {
-        return id;
     }
 
     public Instant getScreeningTime() {
