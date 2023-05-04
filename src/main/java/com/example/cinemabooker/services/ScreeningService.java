@@ -3,6 +3,8 @@ package com.example.cinemabooker.services;
 import com.example.cinemabooker.model.*;
 import com.example.cinemabooker.repositories.ScreeningRepository;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -25,6 +27,18 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening, Screening
 
     public void createScreening(Movie movie, Room room, Instant screeningTime, Long[] rowNumbers) {
         createScreening(movie, room, screeningTime, rowNumbers.length, index -> rowNumbers[index - 1]);
+    }
+
+    public Page<Screening> findAll(Pageable pageable, Instant start, Instant end) {
+        Page<Screening> result = repository.findAllByScreeningTimeBetween(start, end, pageable);
+        logger.info("Found page of entities: " + result);
+        return result;
+    }
+
+    public Page<Screening> findAll(String movieId, Pageable pageable) {
+        Page<Screening> result = repository.findAllByMovieId(movieId, pageable);
+        logger.info("Found page of entities: " + result);
+        return result;
     }
 
     private void createScreening(Movie movie, Room room, Instant screeningTime, long rowsNumber, Function<Integer, Long> seatsInRowNumberSupplier) {

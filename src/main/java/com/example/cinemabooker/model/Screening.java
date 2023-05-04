@@ -36,6 +36,10 @@ public class Screening extends AbstractEntity implements EntityUpdateInterface<S
         this.room = room;
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
     public Movie getMovie() {
         return movie;
     }
