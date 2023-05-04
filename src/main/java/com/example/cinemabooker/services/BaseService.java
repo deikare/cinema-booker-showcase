@@ -39,9 +39,12 @@ public abstract class BaseService<T extends EntityInterface, R extends JpaReposi
         repository.delete(find(id));
     }
 
-    public Page<T> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<T> findAll(Pageable pageable) {
         Page<T> result = repository.findAll(pageable);
+        return logFindResult(result);
+    }
+
+    protected Page<T> logFindResult(Page<T> result) {
         logger.info("Found page of entities: " + result);
         return result;
     }

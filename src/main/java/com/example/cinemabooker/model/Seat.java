@@ -60,4 +60,6 @@ public class Seat extends AbstractEntity implements EntityInterface {
     public void setType(SeatType type) {
         this.type = type;
     }
+
+
 }

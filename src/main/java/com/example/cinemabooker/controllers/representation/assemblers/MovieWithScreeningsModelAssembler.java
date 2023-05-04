@@ -16,7 +16,7 @@ public class MovieWithScreeningsModelAssembler implements RepresentationModelAss
     public EntityModel<MovieWithScreeningsModel> toModel(MovieWithScreeningsModel entity) {
         return EntityModel.of(entity,
                 linkTo(methodOn(MovieController.class).one(entity.getId())).withSelfRel(),
-                linkTo(methodOn(MovieController.class).all(ControllerDefaults.PAGE_NUMBER, ControllerDefaults.PAGE_SIZE, null, null)).withRel("all")
+                linkTo(methodOn(MovieController.class).all(ControllerDefaults.PAGE_NUMBER, ControllerDefaults.PAGE_SIZE, null, null)).withRel(ControllerDefaults.ALL_LINK_REL)
         );
     }
 }

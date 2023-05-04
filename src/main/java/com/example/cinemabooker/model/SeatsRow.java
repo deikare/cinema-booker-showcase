@@ -37,4 +37,12 @@ public class SeatsRow extends AbstractEntity implements EntityInterface {
     public void setScreening(Screening screening) {
         this.screening = screening;
     }
+
+    public Set<Seat> getSeats() {
+        return seats;
+    }
+
+    public long getPosition() {
+        return position;
+    }
 }

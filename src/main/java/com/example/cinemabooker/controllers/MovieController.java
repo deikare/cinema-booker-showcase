@@ -14,7 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +25,7 @@ import java.time.Instant;
 
 @RestController
 @RequestMapping("/movies")
-public class MovieController extends BaseController<Movie, MovieRepository, MovieService, MovieModelAssembler> {
+public class MovieController extends BaseControllerWithGetOne<Movie, MovieRepository, MovieService, MovieModelAssembler> {
     private final MovieWithScreeningsModelAssembler movieWithScreeningsModelAssembler;
     private final PagedResourcesAssembler<MovieWithScreeningsModel> movieWithScreeningsPagedResourcesAssembler;
     protected MovieController(MovieService service, PagedResourcesAssembler<Movie> pagedResourcesAssembler, MovieModelAssembler modelAssembler, MovieWithScreeningsModelAssembler movieWithScreeningsModelAssembler, PagedResourcesAssembler<MovieWithScreeningsModel> movieWithScreeningsPagedResourcesAssembler) {

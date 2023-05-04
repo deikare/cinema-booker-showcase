@@ -5,6 +5,7 @@ import com.example.cinemabooker.model.Movie;
 import com.example.cinemabooker.model.Screening;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class MovieWithScreeningsModel  {
+public class MovieWithScreeningsModel extends RepresentationModel<MovieWithScreeningsModel> {
     private final String id;
     private final String title;
     private final List<EntityModel<Screening>> screenings = new LinkedList<>();

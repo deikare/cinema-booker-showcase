@@ -1,9 +1,12 @@
 package com.example.cinemabooker.controllers;
 
 import com.example.cinemabooker.controllers.representation.assemblers.ScreeningModelAssembler;
+import com.example.cinemabooker.controllers.representation.assemblers.ScreeningWithSeatsModelAssembler;
+import com.example.cinemabooker.controllers.representation.models.ScreeningWithSeatsModel;
 import com.example.cinemabooker.model.Screening;
 import com.example.cinemabooker.repositories.ScreeningRepository;
 import com.example.cinemabooker.services.ScreeningService;
+import org.hibernate.Hibernate;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,18 +17,17 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 
 @RestController
 @RequestMapping("/screenings")
 public class ScreeningController extends BaseController<Screening, ScreeningRepository, ScreeningService, ScreeningModelAssembler> {
-    protected ScreeningController(ScreeningService service, PagedResourcesAssembler<Screening> pagedResourcesAssembler, ScreeningModelAssembler modelAssembler) {
+    private final ScreeningWithSeatsModelAssembler screeningWithSeatsModelAssembler;
+    protected ScreeningController(ScreeningService service, PagedResourcesAssembler<Screening> pagedResourcesAssembler, ScreeningModelAssembler modelAssembler, ScreeningWithSeatsModelAssembler screeningWithSeatsModelAssembler) {
         super(LoggerFactory.getLogger(ScreeningController.class), service, pagedResourcesAssembler, modelAssembler);
+        this.screeningWithSeatsModelAssembler = screeningWithSeatsModelAssembler;
     }
 
     @GetMapping
@@ -46,5 +48,12 @@ public class ScreeningController extends BaseController<Screening, ScreeningRepo
         }
         PagedModel<EntityModel<Screening>> screeningsView = pagedResourcesAssembler.toModel(screenings, modelAssembler);
         return new ResponseEntity<>(screeningsView, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public EntityModel<ScreeningWithSeatsModel> one(@PathVariable String id) {
+        logger.info("Received request get one entity: id=" + id);
+        Screening entity = service.findAndFetchSeats(id);
+        return screeningWithSeatsModelAssembler.toModel(entity);
     }
 }

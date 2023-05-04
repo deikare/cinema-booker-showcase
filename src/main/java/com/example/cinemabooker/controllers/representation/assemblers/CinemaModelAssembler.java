@@ -17,6 +17,6 @@ public class CinemaModelAssembler implements RepresentationModelAssembler<Cinema
     public EntityModel<Cinema> toModel(Cinema entity) {
         return EntityModel.of(entity,
                 linkTo(methodOn(CinemaController.class).one(entity.getId())).withSelfRel(),
-                linkTo(methodOn(CinemaController.class).all(ControllerDefaults.PAGE_NUMBER, ControllerDefaults.PAGE_SIZE)).withRel("cinemas"));
+                linkTo(methodOn(CinemaController.class).all(ControllerDefaults.PAGE_NUMBER, ControllerDefaults.PAGE_SIZE)).withRel(ControllerDefaults.ALL_LINK_REL));
     }
 }

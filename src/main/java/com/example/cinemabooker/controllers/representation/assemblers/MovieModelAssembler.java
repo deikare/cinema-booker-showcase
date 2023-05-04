@@ -16,6 +16,6 @@ public class MovieModelAssembler implements RepresentationModelAssembler<Movie, 
     public EntityModel<Movie> toModel(Movie entity) {
         return EntityModel.of(entity,
                 linkTo(methodOn(MovieController.class).one(entity.getId())).withSelfRel(),
-                linkTo(methodOn(MovieController.class).all(ControllerDefaults.PAGE_NUMBER, ControllerDefaults.PAGE_SIZE, null, null)).withRel("movies")); //todo - add link to screenings
+                linkTo(methodOn(MovieController.class).all(ControllerDefaults.PAGE_NUMBER, ControllerDefaults.PAGE_SIZE, null, null)).withRel(ControllerDefaults.ALL_LINK_REL)); //todo - add link to screenings
     }
 }

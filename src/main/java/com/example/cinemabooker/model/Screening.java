@@ -53,6 +53,10 @@ public class Screening extends AbstractEntity implements EntityUpdateInterface<S
         seatsRow.setScreening(this);
     }
 
+    public Set<SeatsRow> getSeatsRows() {
+        return seatsRows;
+    }
+
     public Instant getScreeningTime() {
         return screeningTime;
     }

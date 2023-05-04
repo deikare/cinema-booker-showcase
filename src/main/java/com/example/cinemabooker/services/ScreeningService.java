@@ -2,6 +2,8 @@ package com.example.cinemabooker.services;
 
 import com.example.cinemabooker.model.*;
 import com.example.cinemabooker.repositories.ScreeningRepository;
+import com.example.cinemabooker.services.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,14 +33,24 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening, Screening
 
     public Page<Screening> findAll(Pageable pageable, Instant start, Instant end) {
         Page<Screening> result = repository.findAllByScreeningTimeBetween(start, end, pageable);
-        logger.info("Found page of entities: " + result);
-        return result;
+        return logFindResult(result);
     }
 
     public Page<Screening> findAll(String movieId, Pageable pageable) {
         Page<Screening> result = repository.findAllByMovieId(movieId, pageable);
-        logger.info("Found page of entities: " + result);
-        return result;
+        return logFindResult(result);
+    }
+
+    public Screening findAndFetchSeats(String id) throws EntityNotFoundException {
+        return repository.findByIdAndFetchSeatsRows(id).map(t -> {
+                    logger.info("Successfully found entity{id=" + id + "}");
+                    return t;
+                })
+                .orElseThrow(() -> {
+                    String msg = "Entity{id=" + id + "} not found";
+                    logger.info(msg);
+                    return new NotFoundException(msg);
+                });
     }
 
     private void createScreening(Movie movie, Room room, Instant screeningTime, long rowsNumber, Function<Integer, Long> seatsInRowNumberSupplier) {
@@ -57,7 +69,7 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening, Screening
         seatsRowService.save(newRow);
 
         for (long column = 1; column <= seatsNumber; column++) {
-            Seat newSeat = new Seat(seatsNumber);
+            Seat newSeat = new Seat(column);
             newRow.addSeat(newSeat);
             seatService.save(newSeat);
         }
