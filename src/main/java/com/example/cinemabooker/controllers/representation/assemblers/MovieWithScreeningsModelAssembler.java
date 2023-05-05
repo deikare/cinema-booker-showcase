@@ -33,30 +33,24 @@ public class MovieWithScreeningsModelAssembler implements RepresentationModelAss
 
     @Override
     public CollectionModel<MovieWithScreeningsModel> toCollectionModel(Iterable<? extends Screening> entities) {
-        LinkedHashMap<Movie, List<Screening>> movies = new LinkedHashMap<>();
+        LinkedHashMap<String, MovieWithScreeningsModel> movies = new LinkedHashMap<>();
 
         StreamSupport.stream(entities.spliterator(), false).forEach(screening -> {
             Movie movie = screening.getMovie();
-            if (!movies.containsKey(movie))
-                movies.put(movie, new LinkedList<>());
-            movies.get(movie).add(screening);
+            String key = movie.getId();
+            MovieWithScreeningsModel movieModel = movies.get(key);
+            if (movieModel == null) {
+                movieModel = new MovieWithScreeningsModel(movie);
+                movies.put(key, movieModel);
+                movieModel.add(linkTo(methodOn(MovieController.class).one(movie.getId())).withSelfRel());
+            }
+
+            MovieWithScreeningsModel.ScreeningModel screeningModel = new MovieWithScreeningsModel.ScreeningModel(screening);
+            screeningModel.add(linkTo(methodOn(ScreeningController.class).one(screening.getId())).withSelfRel());
+            movieModel.addScreening(screeningModel);
         });
 
-        List<MovieWithScreeningsModel> convertedEntities = movies.entrySet().stream().map(movieListEntry -> {
-                            Movie movie = movieListEntry.getKey();
-                            MovieWithScreeningsModel movieModel = new MovieWithScreeningsModel(movie);
-
-                            movieListEntry.getValue().forEach(screening -> {
-                                MovieWithScreeningsModel.ScreeningModel screeningModel = new MovieWithScreeningsModel.ScreeningModel(screening);
-                                screeningModel.add(linkTo(methodOn(ScreeningController.class).one(screening.getId())).withSelfRel());
-                                movieModel.addScreening(screeningModel);
-                            });
-
-                            movieModel.add(linkTo(methodOn(MovieController.class).one(movie.getId())).withSelfRel());
-                            return movieModel;
-                        }
-                )
-                .toList();
+        List<MovieWithScreeningsModel> convertedEntities = movies.values().stream().toList();
 
         return CollectionModel.of(convertedEntities,
                 linkTo(methodOn(MovieController.class).all(ControllerDefaults.PAGE_NUMBER, ControllerDefaults.PAGE_SIZE, null, null)).withRel(ControllerDefaults.ALL_LINK_REL)
