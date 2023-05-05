@@ -1,42 +1,46 @@
 package com.example.cinemabooker.controllers.representation.models;
 
-import com.example.cinemabooker.controllers.ScreeningController;
 import com.example.cinemabooker.model.Movie;
 import com.example.cinemabooker.model.Screening;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 public class MovieWithScreeningsModel extends RepresentationModel<MovieWithScreeningsModel> {
-    private final String id;
     private final String title;
-    private final List<EntityModel<Screening>> screenings = new LinkedList<>();
+    private final List<ScreeningModel> screenings = new LinkedList<>();
 
-
-    public MovieWithScreeningsModel(Movie movie, List<Screening> screenings) {
-        this.id = movie.getId();
+    public MovieWithScreeningsModel(Movie movie) {
         this.title = movie.getTitle();
-        screenings.forEach(screening -> this.screenings.add(EntityModel.of(screening,
-                linkTo(methodOn(ScreeningController.class).one(screening.getId())).withSelfRel() //todo embedding links here is considered antipattern - perhaps custom representation model is needed? - see projections
-        )));
-    }
-
-    @JsonIgnore
-    public String getId() {
-        return id;
+//        screenings.forEach(screening -> this.screenings.add(new ScreeningModel(screening)));
     }
 
     public String getTitle() {
         return title;
     }
 
-    public List<EntityModel<Screening>> getScreenings() {
+    public void addScreening(ScreeningModel screeningModel) {
+        screenings.add(screeningModel);
+    }
+
+    public List<ScreeningModel> getScreenings() {
         return screenings;
     }
+
+    public static class ScreeningModel extends RepresentationModel<ScreeningModel> {
+        private final Instant screeningTime;
+
+        public ScreeningModel(Screening screening) {
+            this.screeningTime = screening.getScreeningTime();
+        }
+
+        public Instant getScreeningTime() {
+            return screeningTime;
+        }
+    }
+
+
 }

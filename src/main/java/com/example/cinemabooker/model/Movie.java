@@ -29,4 +29,8 @@ public class Movie extends AbstractEntity implements EntityInterface {
     public String getTitle() {
         return title;
     }
+
+    public Set<Screening> getScreenings() {
+        return screenings;
+    }
 }

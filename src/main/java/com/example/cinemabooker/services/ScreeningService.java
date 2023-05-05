@@ -41,6 +41,11 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening, Screening
         return logFindResult(result);
     }
 
+    public Page<Screening> findAllBetween(Instant start, Instant end, Pageable pageable) {
+        Page<Screening> result = repository.findAllByScreeningTimeBetween(start, end, pageable);
+        return logFindResult(result);
+    }
+
     public Screening findAndFetchSeats(String id) throws EntityNotFoundException {
         return repository.findByIdAndFetchSeatsRows(id).map(t -> {
                     logger.info("Successfully found entity{id=" + id + "}");

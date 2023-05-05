@@ -24,9 +24,12 @@ public class MovieService extends BaseService<Movie, MovieRepository> {
     public Page<MovieWithScreeningsModel> findAllBetween(Instant start, Instant end, Pageable pageable) {
         Page<Screening> screenings = screeningRepository.findAllByScreeningTimeBetween(start, end, pageable);
 
+        logger.info("movie screenings size: " + screenings.iterator().next().getMovie().getScreenings().size());
+
         Map<Movie, List<Screening>> movies = screenings.get().collect(Collectors.groupingBy(Screening::getMovie));
-        List<MovieWithScreeningsModel> moviesView = movies.entrySet().stream().map(movieListEntry -> new MovieWithScreeningsModel(movieListEntry.getKey(), movieListEntry.getValue())).toList();
-        return new PageImpl<>(moviesView, pageable, screenings.getTotalElements());
+//        List<MovieWithScreeningsModel> moviesView = movies.entrySet().stream().map(movieListEntry -> new MovieWithScreeningsModel(movieListEntry.getKey(), movieListEntry.getValue())).toList();
+//        return new PageImpl<>(moviesView, pageable, screenings.getTotalElements());
+        return null;
     }
 
 }
