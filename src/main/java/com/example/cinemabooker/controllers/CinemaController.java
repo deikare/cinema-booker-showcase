@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cinemas")
-public class CinemaController extends BaseControllerWithGetAll<Cinema, CinemaRepository, CinemaService, CinemaModelAssembler> {
+public class CinemaController extends BaseControllerWithPost<Cinema, CinemaRepository, CinemaService, CinemaModelAssembler> {
     public CinemaController(CinemaService service, PagedResourcesAssembler<Cinema> pagedResourcesAssembler, CinemaModelAssembler modelAssembler) {
         super(LoggerFactory.getLogger(CinemaController.class), service, pagedResourcesAssembler, modelAssembler);
     }

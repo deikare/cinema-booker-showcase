@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public class BaseController<T extends EntityInterface, R extends JpaRepository<T, String>, S extends BaseService<T, R>, A extends RepresentationModelAssembler<T, EntityModel<T>>>  {
+public abstract class BaseController<T extends EntityInterface, R extends JpaRepository<T, String>, S extends BaseService<T, R>, A extends RepresentationModelAssembler<T, EntityModel<T>>>  {
     protected final Logger logger;
     protected final S service;
     protected final PagedResourcesAssembler<T> pagedResourcesAssembler;
@@ -26,17 +26,6 @@ public class BaseController<T extends EntityInterface, R extends JpaRepository<T
         this.service = service;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
         this.modelAssembler = modelAssembler;
-    }
-
-    @PostMapping
-    public ResponseEntity<?> newEntity(@RequestBody T entity) {
-        logger.info("Received request post entity" + entity);
-
-        EntityModel<T> entityModel = modelAssembler.toModel(service.create(entity));
-
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
     }
 
     @DeleteMapping("/{id}")
