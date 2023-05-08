@@ -22,7 +22,7 @@ public class ReservationForm {
 
 
     @NotEmpty(message = "seats map cannot be empty")
-    Map<@Positive(message = "row number must be positive") Long, @NotEmpty(message = "seats in row list cannot be empty") List<SeatReservation>> seats;
+    Map<@Positive(message = "row number must be positive") Long, @NotEmpty(message = "seats in row list cannot be empty") List<SeatReservation>> seats; //todo change list<seatReservation> to list of union of {seat position, type} or {(seat start, seat end) + types list}
 
     @Override
     public String toString() {
