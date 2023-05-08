@@ -5,8 +5,8 @@ url = "http://localhost:8080/reservations"
 
 obj = {
     "screeningId": "f79acdfa-7e3b-44cd-afdd-94cfe80cde44",
-    "name": "Xyzasd",
-    "surname": "Xyzasd",
+    "name": "Rafał",
+    "surname": "Wąchocki-Mińkowskił",
     "seats": {
         1: [
             {"number": 1, "type": "STANDARD"},
@@ -20,6 +20,15 @@ obj = {
         ]
     }
 }
+
+# obj = {
+#     "screeningId": "f79acdfa-7e3b-44cd-afdd-94cfe80cde44",
+#     "name": "Xyzasd",
+#     "surname": "Xyzasd",
+#     "seats": {
+#         1: []
+#     }
+# }
 
 r = requests.post(url, json=obj)
 print(r.json())

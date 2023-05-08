@@ -8,21 +8,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ReservationForm {
-    @NotNull
-    @Pattern(regexp = ValidationDefaults.ID_PATTERN)
+    @NotBlank(message = "screeningId must not be blank")
+    @Pattern(regexp = ValidationDefaults.ID_PATTERN, message = "screeningId must match uuid pattern")
     private String screeningId;
 
-    @NotNull
-    @Pattern(regexp = ValidationDefaults.NAME_PATTERN)
+    @NotBlank(message = "name must not be blank")
+    @Pattern(regexp = ValidationDefaults.NAME_PATTERN, message = "name must match pattern")
     private String name;
 
-    @NotNull
-    @Pattern(regexp = ValidationDefaults.SURNAME_PATTERN)
+    @NotBlank(message = "surname must not be blank")
+    @Pattern(regexp = ValidationDefaults.SURNAME_PATTERN, message = "surname must match pattern")
     private String surname;
 
 
-    @NotNull
-    Map<Long, List<SeatReservation>> seats;
+    @NotEmpty(message = "seats map cannot be empty")
+    Map<@Positive(message = "row number must be positive") Long, @NotEmpty(message = "seats in row list cannot be empty") List<SeatReservation>> seats;
 
     @Override
     public String toString() {
@@ -37,11 +37,11 @@ public class ReservationForm {
                 '}';
     }
 
-    private static class SeatReservation { //todo add inner validation to check on emptiness of list
-        @Positive
+    private static class SeatReservation {
+        @Positive(message = "seat number must be positive")
         private long number;
 
-        @NotNull
+        @NotBlank(message = "reservation type must not be blank")
         private SeatType type;
 
         @Override
