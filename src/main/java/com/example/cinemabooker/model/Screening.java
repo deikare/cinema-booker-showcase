@@ -4,7 +4,9 @@ import com.example.cinemabooker.services.interfaces.EntityUpdateInterface;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,7 +23,7 @@ public class Screening extends AbstractEntity implements EntityUpdateInterface<S
     private Instant screeningTime;
 
     @OneToMany(mappedBy = "screening", orphanRemoval = true, cascade = CascadeType.ALL)
-    Set<SeatsRow> seatsRows = new HashSet<>();
+    List<SeatsRow> seatsRows = new ArrayList<>();
 
     public Screening() {
     }
@@ -53,8 +55,12 @@ public class Screening extends AbstractEntity implements EntityUpdateInterface<S
         seatsRow.setScreening(this);
     }
 
-    public Set<SeatsRow> getSeatsRows() {
+    public List<SeatsRow> getSeatsRows() {
         return seatsRows;
+    }
+
+    public void setSeatsRows(List<SeatsRow> seatsRows) {
+        this.seatsRows = seatsRows;
     }
 
     public Instant getScreeningTime() {

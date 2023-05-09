@@ -3,7 +3,9 @@ package com.example.cinemabooker.model;
 import com.example.cinemabooker.services.interfaces.EntityInterface;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,7 +14,7 @@ public class SeatsRow extends AbstractEntity implements EntityInterface {
     private long position;
 
     @OneToMany(mappedBy = "row", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<Seat> seats = new HashSet<>();
+    private List<Seat> seats = new ArrayList<>();
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "screening_id")
@@ -38,11 +40,19 @@ public class SeatsRow extends AbstractEntity implements EntityInterface {
         this.screening = screening;
     }
 
-    public Set<Seat> getSeats() {
+    public long getPosition() {
+        return position;
+    }
+
+    public void setPosition(long position) {
+        this.position = position;
+    }
+
+    public List<Seat> getSeats() {
         return seats;
     }
 
-    public long getPosition() {
-        return position;
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
     }
 }

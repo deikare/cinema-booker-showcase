@@ -1,17 +1,13 @@
 package com.example.cinemabooker.controllers;
 
-import com.example.cinemabooker.controllers.forms.ReservationForm;
+import com.example.cinemabooker.controllers.requests.ReservationRequest;
 import com.example.cinemabooker.controllers.representation.assemblers.ReservationModelAssembler;
 import com.example.cinemabooker.model.Reservation;
 import com.example.cinemabooker.repositories.ReservationRepository;
 import com.example.cinemabooker.services.ReservationService;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +22,8 @@ public class ReservationController extends BaseControllerWithGetOne<Reservation,
     }
 
     @PostMapping
-    public ResponseEntity<?> newEntity(@RequestBody @Valid ReservationForm reservationForm) {
-        logger.info("Received request post entity" + reservationForm);
+    public ResponseEntity<?> newEntity(@RequestBody @Valid ReservationRequest reservationRequest) {
+        logger.info("Received request post entity" + reservationRequest);
 
         return null;
 

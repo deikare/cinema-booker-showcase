@@ -1,4 +1,4 @@
-package com.example.cinemabooker.controllers.forms;
+package com.example.cinemabooker.controllers.requests;
 
 public final class ValidationDefaults {
     private ValidationDefaults() {}

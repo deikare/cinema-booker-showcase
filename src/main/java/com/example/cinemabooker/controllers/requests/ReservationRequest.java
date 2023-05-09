@@ -1,4 +1,4 @@
-package com.example.cinemabooker.controllers.forms;
+package com.example.cinemabooker.controllers.requests;
 
 import com.example.cinemabooker.model.SeatType;
 import jakarta.validation.constraints.*;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ReservationForm {
+public class ReservationRequest {
     @NotBlank(message = "screeningId must not be blank")
     @Pattern(regexp = ValidationDefaults.ID_PATTERN, message = "screeningId must match uuid pattern")
     private String screeningId;
@@ -22,13 +22,15 @@ public class ReservationForm {
 
 
     @NotEmpty(message = "seats map cannot be empty")
-    Map<@Positive(message = "row number must be positive") Long, @NotEmpty(message = "seats in row list cannot be empty") List<SeatReservation>> seats; //todo change list<seatReservation> to list of union of {seat position, type} or {(seat start, seat end) + types list} - require sorted list
+    Map<@Positive(message = "row number must be positive") Long, @NotNull(message = "seat row info must be set") SeatReservation> seats; //todo change list<seatReservation> to list of union of {seat position, type} or {(seat start, seat end) + types list} - require sorted list
+    //todo just do only start, finish + list of types
 
     @Override
     public String toString() {
         String seatsMsg = seats.entrySet().stream().map(longListEntry -> {
-            return "{row=" + longListEntry.getKey() + ": seats=[" + longListEntry.getValue().stream().map(SeatReservation::toString).collect(Collectors.joining(",")) + "]}";
+            return "{row=" + longListEntry.getKey() + ": seats=" + longListEntry.getValue().toString() + "}";
         }).collect(Collectors.joining(", "));
+
         return "ReservationForm{" +
                 "screeningId='" + screeningId + '\'' +
                 ", name='" + name + '\'' +
@@ -37,32 +39,47 @@ public class ReservationForm {
                 '}';
     }
 
-    private static class SeatReservation {
-        @Positive(message = "seat number must be positive")
-        private long number;
+    public static class SeatReservation {
+        @Positive(message = "seat number first must be positive")
+        private long first;
 
-        @NotBlank(message = "reservation type must not be blank")
-        private SeatType type;
+        @Positive(message = "seat number last must be positive")
+        private long last;
+
+        @NotEmpty(message = "reservation types must not be empty")
+        private List<SeatType> types;
+
+        public long getFirst() {
+            return first;
+        }
+
+        public void setFirst(long first) {
+            this.first = first;
+        }
+
+        public long getLast() {
+            return last;
+        }
+
+        public void setLast(long last) {
+            this.last = last;
+        }
+
+        public List<SeatType> getTypes() {
+            return types;
+        }
+
+        public void setTypes(List<SeatType> types) {
+            this.types = types;
+        }
 
         @Override
         public String toString() {
-            return "{number=" + number + ", type=" + type + "}";
-        }
-
-        public long getNumber() {
-            return number;
-        }
-
-        public void setNumber(long number) {
-            this.number = number;
-        }
-
-        public SeatType getType() {
-            return type;
-        }
-
-        public void setType(SeatType type) {
-            this.type = type;
+            return "SeatReservation{" +
+                    "start=" + first +
+                    ", end=" + last +
+                    ", types=" + types +
+                    '}';
         }
     }
 
@@ -90,11 +107,11 @@ public class ReservationForm {
         this.surname = surname;
     }
 
-    public Map<Long, List<SeatReservation>> getSeats() {
+    public Map<Long, SeatReservation> getSeats() {
         return seats;
     }
 
-    public void setSeats(Map<Long, List<SeatReservation>> seats) {
+    public void setSeats(Map<Long, SeatReservation> seats) {
         this.seats = seats;
     }
 }

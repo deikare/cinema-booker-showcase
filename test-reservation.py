@@ -8,16 +8,16 @@ obj = {
     "name": "Rafał",
     "surname": "Wąchocki-Mińkowskił",
     "seats": {
-        1: [
-            {"number": 1, "type": "STANDARD"},
-            {"number": 2, "type": "CHILD"},
-            {"number": 3, "type": "STUDENT"},
-        ],
-        2: [
-            {"number": 4, "type": "STANDARD"},
-            {"number": 5, "type": "CHILD"},
-            {"number": 6, "type": "STUDENT"},
-        ]
+        1: {
+            "start": 1,
+            "end": 3,
+            "types": ["STANDARD", "CHILD", "STUDENT"]
+        },
+        2: {
+            "start": 4,
+            "end": 6,
+            "types": ["STUDENT", "CHILD", "STANDARD"]
+        }
     }
 }
 
