@@ -33,7 +33,7 @@ public class Screening extends AbstractEntity implements EntityUpdateInterface<S
         this.room = room;
         this.screeningTime = screeningTime;
     }
-    
+
     public void setRoom(Room room) {
         this.room = room;
     }

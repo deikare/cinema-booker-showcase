@@ -5,9 +5,12 @@ import com.example.cinemabooker.controllers.representation.assemblers.Reservatio
 import com.example.cinemabooker.model.Reservation;
 import com.example.cinemabooker.repositories.ReservationRepository;
 import com.example.cinemabooker.services.ReservationService;
+import com.example.cinemabooker.services.exceptions.BadReservationRequestException;
 import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,10 +26,23 @@ public class ReservationController extends BaseControllerWithGetOne<Reservation,
 
     @PostMapping
     public ResponseEntity<?> newEntity(@RequestBody @Valid ReservationRequest reservationRequest) {
-        logger.info("Received request post entity" + reservationRequest);
+        logger.info("Received request post " + reservationRequest);
+        Reservation reservation;
+        ResponseEntity<?> response;
 
-        return null;
+        try {
+            reservation = service.validateAndSaveReservation(reservationRequest);
+            EntityModel<Reservation> reservationModel = modelAssembler.toModel(reservation);
+            response = ResponseEntity
+                    .created(reservationModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                    .body(reservationModel);
+        } catch (BadReservationRequestException e) {
+            response = ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
 
+        return response;
 
 //        EntityModel<Reservation> entityModel = modelAssembler.toModel(service.create(reservationForm));
 

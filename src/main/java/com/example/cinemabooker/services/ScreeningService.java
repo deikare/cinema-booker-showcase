@@ -23,11 +23,11 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening, Screening
         this.seatService = seatService;
     }
 
-    public void createScreening(Movie movie, Room room, Instant screeningTime, long rowsNumber, long columnsNumber) {
+    public void createScreening(Movie movie, Room room, Instant screeningTime, int rowsNumber, int columnsNumber) {
         createScreening(movie, room, screeningTime, rowsNumber, index -> columnsNumber);
     }
 
-    public void createScreening(Movie movie, Room room, Instant screeningTime, Long[] rowNumbers) {
+    public void createScreening(Movie movie, Room room, Instant screeningTime, Integer[] rowNumbers) {
         createScreening(movie, room, screeningTime, rowNumbers.length, index -> rowNumbers[index - 1]);
     }
 
@@ -58,7 +58,7 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening, Screening
                 });
     }
 
-    private void createScreening(Movie movie, Room room, Instant screeningTime, long rowsNumber, Function<Integer, Long> seatsInRowNumberSupplier) {
+    private void createScreening(Movie movie, Room room, Instant screeningTime, int rowsNumber, Function<Integer, Integer> seatsInRowNumberSupplier) {
         Screening screening = new Screening(movie, room, screeningTime);
         screening = repository.save(screening);
 
@@ -68,7 +68,7 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening, Screening
         repository.save(screening);
     }
 
-    private void createRowWithSeats(Screening screening, long rowPosition, long seatsNumber) {
+    private void createRowWithSeats(Screening screening, int rowPosition, int seatsNumber) {
         SeatsRow newRow = new SeatsRow(rowPosition);
         screening.addSeatsRow(newRow);
         seatsRowService.save(newRow);

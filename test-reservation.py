@@ -4,19 +4,17 @@ import requests
 url = "http://localhost:8080/reservations"
 
 obj = {
-    "screeningId": "f79acdfa-7e3b-44cd-afdd-94cfe80cde44",
+    "screeningId": "e9a5d6c3-1711-4c2f-8ce6-5240b5ae86d9",
     "name": "Rafał",
     "surname": "Wąchocki-Mińkowskił",
     "seats": {
         1: {
-            "start": 1,
-            "end": 3,
-            "types": ["STANDARD", "CHILD", "STUDENT"]
+            "first": 1,
+            "types": ["ADULT", "CHILD", "STUDENT"]
         },
         2: {
-            "start": 4,
-            "end": 6,
-            "types": ["STUDENT", "CHILD", "STANDARD"]
+            "first": 4,
+            "types": ["STUDENT", "CHILD", "ADULT"]
         }
     }
 }
@@ -31,4 +29,4 @@ obj = {
 # }
 
 r = requests.post(url, json=obj)
-print(r.json())
+print(r.text)

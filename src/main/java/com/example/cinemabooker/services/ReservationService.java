@@ -7,6 +7,7 @@ import com.example.cinemabooker.repositories.ScreeningRepository;
 import com.example.cinemabooker.repositories.SeatRepository;
 import com.example.cinemabooker.repositories.SeatsRowRepository;
 import com.example.cinemabooker.services.exceptions.BadReservationRequestException;
+import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class ReservationService extends BaseService<Reservation, ReservationRepo
         this.screeningRepository = screeningRepository;
     }
 
+    @Transactional
     public Reservation validateAndSaveReservation(ReservationRequest reservationRequest) throws BadReservationRequestException {
         String screeningId = reservationRequest.getScreeningId();
 
@@ -39,8 +41,9 @@ public class ReservationService extends BaseService<Reservation, ReservationRepo
         List<Seat> seatsToSave = getSeatsWithUpdatedReservation(reservationRequest.getSeats(), reservation, screening);
 
         seatRepository.saveAll(seatsToSave);
+        reservation = repository.save(reservation);
         logger.info("Successfully created new " + reservation);
-        return repository.save(reservation);
+        return reservation;
     }
 
     private Screening findFetchedScreening(String screeningId) throws BadReservationRequestException {
@@ -55,54 +58,45 @@ public class ReservationService extends BaseService<Reservation, ReservationRepo
         List<Seat> result = new ArrayList<>();
 
         seatReservationMap.forEach((rowPosition, seatRequest) -> {
-            long first = seatRequest.getFirst();
-            long last = seatRequest.getLast();
+            int first = seatRequest.getFirst();
             List<SeatType> types = seatRequest.getTypes();
-
-            if (first > last) {
-                String msg = "Starting seat position is bigger than end's position";
-                logger.info(msg);
-                throw new BadReservationRequestException(msg);
-            }
-
-            long declaredSeatsSize = last - first + 1;
-            if (declaredSeatsSize != types.size()) {
-                String msg = "Types list size=" + types.size() + " should match declared size=" + declaredSeatsSize;
-                logger.info(msg);
-                throw new BadReservationRequestException(msg);
-            }
+            int size = types.size();
+            int last = size + first;
 
             SeatsRow seatsRow = getSeatsRowWithPosition(screening.getSeatsRows(), rowPosition);
 
-            AtomicInteger indexHolder = new AtomicInteger(0);
+            List<Seat> seats = seatsRow.getSeats();
+            if (last > seats.size()) {
+                String msg = "Too many seats in row " + rowPosition + ": received request to reserve seats in range [" + first + "," + last + "], last seat number = " + (seats.size() + 1);
+                logger.info(msg);
+                throw new BadReservationRequestException(msg);
+            }
 
-            seatsRow.getSeats().forEach(seat -> {
-                int index = indexHolder.getAndIncrement();
-                long seatPosition = seat.getPosition();
-                if (seatPosition >= first && seatPosition <= last) {
-                    if (seat.getReservation() == null) {
-                        reservation.addSeat(seat, types.get(index));
-                        result.add(seat);
-                    } else {
-                        String msg = seat + " is already taken";
-                        logger.info(msg);
-                        throw new BadReservationRequestException(msg);
-                    }
+            first--;
+            for (int i = 0; i < size; i++) {
+                Seat seat = seats.get(first);
+                if (seat.getReservation() != null) {
+                    String msg = seat + " is already taken";
+                    logger.info(msg);
+                    throw new BadReservationRequestException(msg);
                 }
-            });
+
+                reservation.addSeat(seat, types.get(i));
+                result.add(seat);
+                first++;
+            }
         });
 
         return result;
     }
 
-    private SeatsRow getSeatsRowWithPosition(List<SeatsRow> seatsRows, long rowPosition) {
-        return seatsRows.stream()
-                .filter(aSeatsRow -> aSeatsRow.getPosition() == rowPosition)
-                .findFirst()
-                .orElseThrow(() -> {
-                    String msg = "Seats row with position=" + rowPosition + " not found";
-                    logger.info(msg);
-                    return new BadReservationRequestException(msg);
-                });
+    private SeatsRow getSeatsRowWithPosition(List<SeatsRow> seatsRows, long rowPosition) throws BadReservationRequestException {
+        if (rowPosition > seatsRows.size()) {
+            String msg = "Seats row with position=" + rowPosition + " not found";
+            logger.info(msg);
+            throw new BadReservationRequestException(msg);
+        }
+
+        return seatsRows.get((int) rowPosition - 1);
     }
 }

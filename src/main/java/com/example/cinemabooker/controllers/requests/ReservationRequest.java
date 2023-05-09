@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ReservationRequest {
+public class ReservationRequest { //todo add custom validator to check, if fields of given json object are required fields and nothing else - in case other field is passed from e.g. screeningId, screeningId is auto set to this value
     @NotBlank(message = "screeningId must not be blank")
     @Pattern(regexp = ValidationDefaults.ID_PATTERN, message = "screeningId must match uuid pattern")
     private String screeningId;
@@ -22,8 +22,7 @@ public class ReservationRequest {
 
 
     @NotEmpty(message = "seats map cannot be empty")
-    Map<@Positive(message = "row number must be positive") Long, @NotNull(message = "seat row info must be set") SeatReservation> seats; //todo change list<seatReservation> to list of union of {seat position, type} or {(seat start, seat end) + types list} - require sorted list
-    //todo just do only start, finish + list of types
+    Map<@Positive(message = "row number must be positive") Long, @NotNull(message = "seat row info must be set") SeatReservation> seats;
 
     @Override
     public String toString() {
@@ -31,7 +30,7 @@ public class ReservationRequest {
             return "{row=" + longListEntry.getKey() + ": seats=" + longListEntry.getValue().toString() + "}";
         }).collect(Collectors.joining(", "));
 
-        return "ReservationForm{" +
+        return "ReservationRequest{" +
                 "screeningId='" + screeningId + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
@@ -40,29 +39,19 @@ public class ReservationRequest {
     }
 
     public static class SeatReservation {
-        @Positive(message = "seat number first must be positive")
-        private long first;
-
-        @Positive(message = "seat number last must be positive")
-        private long last;
+        @NotNull(message = "first seat number must be set")
+        @Positive(message = "first seat number must be positive")
+        private int first;
 
         @NotEmpty(message = "reservation types must not be empty")
         private List<SeatType> types;
 
-        public long getFirst() {
+        public int getFirst() {
             return first;
         }
 
-        public void setFirst(long first) {
+        public void setFirst(int first) {
             this.first = first;
-        }
-
-        public long getLast() {
-            return last;
-        }
-
-        public void setLast(long last) {
-            this.last = last;
         }
 
         public List<SeatType> getTypes() {
@@ -76,8 +65,7 @@ public class ReservationRequest {
         @Override
         public String toString() {
             return "SeatReservation{" +
-                    "start=" + first +
-                    ", end=" + last +
+                    "first=" + first +
                     ", types=" + types +
                     '}';
         }

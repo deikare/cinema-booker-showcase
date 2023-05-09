@@ -1,5 +1,5 @@
 package com.example.cinemabooker.model;
 
 public enum SeatType {
-    CHILD, STUDENT, STANDARD
+    CHILD, STUDENT, ADULT
 }

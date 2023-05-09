@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "SeatsRows")
 public class SeatsRow extends AbstractEntity implements EntityInterface {
-    private long position;
+    private int position;
 
     @OneToMany(mappedBy = "row", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Seat> seats = new ArrayList<>();
@@ -23,7 +23,7 @@ public class SeatsRow extends AbstractEntity implements EntityInterface {
     public SeatsRow() {
     }
 
-    public SeatsRow(long position) {
+    public SeatsRow(int position) {
         this.position = position;
     }
 
@@ -44,7 +44,7 @@ public class SeatsRow extends AbstractEntity implements EntityInterface {
         return position;
     }
 
-    public void setPosition(long position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 
