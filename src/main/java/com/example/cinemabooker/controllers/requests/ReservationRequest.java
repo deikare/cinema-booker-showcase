@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ReservationRequest {
+public class ReservationRequest { //todo make validation exception appear in response
     @NotBlank(message = "screeningId must not be blank")
     @Pattern(regexp = ValidationDefaults.ID_PATTERN, message = "screeningId must match uuid pattern")
     private String screeningId;
