@@ -48,7 +48,7 @@ public class InitializeDatabase {
             int i = 0;
             for (Room room : rooms) {
                 for (int j = 0; j < 2; j++) {
-                    screeningService.createScreening(movies.get(i), room, Instant.now().minus(i, ChronoUnit.HOURS), 5, 10);
+                    screeningService.createScreening(movies.get(i), room, Instant.now().plus(i + 2, ChronoUnit.HOURS), 5, 10);
                     i++;
                     if (i == movies.size())
                         i = 0;

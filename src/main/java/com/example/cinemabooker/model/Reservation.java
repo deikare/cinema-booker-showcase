@@ -18,9 +18,9 @@ public class Reservation extends AbstractEntity implements EntityInterface {
     private Set<Seat> seats = new HashSet<>();
 
 
-    public Reservation(Screening screening, Instant expirationTime, String name, String surname) {
+    public Reservation(Screening screening, String name, String surname) {
         this.screening = screening;
-        this.expirationTime = expirationTime;
+        this.expirationTime = screening.getScreeningTime();
         this.name = name;
         this.surname = surname;
         this.cost = 0;
