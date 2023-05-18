@@ -4,7 +4,7 @@ import requests
 url = "http://localhost:8080/reservations"
 
 obj = {
-    "screeningId": "e9a5d6c3-1711-4c2f-8ce6-5240b5ae86d9",
+    "screeningId": "034412eb-ae2e-4a50-93dd-e2ab21b4beb7",
     "name": "Rafał",
     "surname": "Wąchocki-Mińkowskił",
     "seats": {

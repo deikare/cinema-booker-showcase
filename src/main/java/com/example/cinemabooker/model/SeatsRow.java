@@ -2,6 +2,7 @@ package com.example.cinemabooker.model;
 
 import com.example.cinemabooker.services.interfaces.EntityInterface;
 import jakarta.persistence.*;
+import org.springframework.core.annotation.Order;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ public class SeatsRow extends AbstractEntity implements EntityInterface {
     private int position;
 
     @OneToMany(mappedBy = "row", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OrderBy("position asc")
     private List<Seat> seats = new ArrayList<>();
 
     @ManyToOne(optional = false)
