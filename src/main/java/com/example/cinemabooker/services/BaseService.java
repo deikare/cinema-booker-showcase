@@ -1,11 +1,10 @@
 package com.example.cinemabooker.services;
 
-import com.example.cinemabooker.services.interfaces.EntityInterface;
 import com.example.cinemabooker.services.exceptions.IdAlreadyDefinedException;
 import com.example.cinemabooker.services.exceptions.NotFoundException;
+import com.example.cinemabooker.services.interfaces.EntityInterface;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
