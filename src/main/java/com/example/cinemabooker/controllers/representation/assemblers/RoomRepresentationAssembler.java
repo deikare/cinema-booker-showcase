@@ -21,6 +21,6 @@ public class RoomRepresentationAssembler implements RepresentationModelAssembler
                 linkTo(methodOn(RoomController.class).all(ControllerDefaults.PAGE_NUMBER, ControllerDefaults.PAGE_SIZE, null)).withRel(ControllerDefaults.ALL_LINK_REL),
                 linkTo(methodOn(CinemaController.class).one(entity.getCinema().getId())).withRel("cinema"),
                 linkTo(methodOn(RoomController.class).all(ControllerDefaults.PAGE_NUMBER, ControllerDefaults.PAGE_SIZE, entity.getCinema().getId())).withRel("all_with_cinema")
-                );
+        );
     }
 }
