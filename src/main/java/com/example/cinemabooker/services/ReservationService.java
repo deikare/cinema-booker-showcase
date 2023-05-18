@@ -5,7 +5,6 @@ import com.example.cinemabooker.model.*;
 import com.example.cinemabooker.repositories.ReservationRepository;
 import com.example.cinemabooker.repositories.ScreeningRepository;
 import com.example.cinemabooker.repositories.SeatRepository;
-import com.example.cinemabooker.repositories.SeatsRowRepository;
 import com.example.cinemabooker.services.exceptions.BadReservationRequestException;
 import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
@@ -13,8 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReservationService extends BaseService<Reservation, ReservationRepository> {
@@ -22,7 +22,7 @@ public class ReservationService extends BaseService<Reservation, ReservationRepo
 
     private final ScreeningRepository screeningRepository;
 
-    public ReservationService(ReservationRepository repository, SeatsRowRepository seatsRowRepository, SeatRepository seatRepository, ScreeningRepository screeningRepository) {
+    public ReservationService(ReservationRepository repository, SeatRepository seatRepository, ScreeningRepository screeningRepository) {
         super(repository, LoggerFactory.getLogger(ReservationService.class));
         this.seatRepository = seatRepository;
         this.screeningRepository = screeningRepository;

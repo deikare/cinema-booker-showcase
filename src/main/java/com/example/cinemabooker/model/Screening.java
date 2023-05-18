@@ -23,6 +23,7 @@ public class Screening extends AbstractEntity implements EntityUpdateInterface<S
     private Instant screeningTime;
 
     @OneToMany(mappedBy = "screening", orphanRemoval = true, cascade = CascadeType.ALL)
+            @OrderBy("position asc")
     List<SeatsRow> seatsRows = new ArrayList<>();
 
     public Screening() {

@@ -24,8 +24,8 @@ public abstract class BaseControllerWithGetAll<T extends EntityInterface, R exte
     @GetMapping
     public ResponseEntity<PagedModel<EntityModel<T>>> all(@RequestParam(defaultValue = ControllerDefaults.PAGE_NUMBER_AS_STRING) int page, @RequestParam(defaultValue = ControllerDefaults.PAGE_SIZE_AS_STRING) int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<T> entityPage = service.findAll(pageable);
         logger.info("Received request get paged entities: page=" + page + ", size=" + size);
+        Page<T> entityPage = service.findAll(pageable);
         PagedModel<EntityModel<T>> entitiesView = pagedResourcesAssembler.toModel(entityPage, modelAssembler);
         return new ResponseEntity<>(entitiesView, HttpStatus.OK);
     }
