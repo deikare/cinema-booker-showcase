@@ -1,13 +1,14 @@
 package com.example.cinemabooker.controllers.requests;
 
 import com.example.cinemabooker.model.SeatType;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ReservationRequest { //todo add custom validator to check, if fields of given json object are required fields and nothing else - in case other field is passed from e.g. screeningId, screeningId is auto set to this value
+public class ReservationRequest {
     @NotBlank(message = "screeningId must not be blank")
     @Pattern(regexp = ValidationDefaults.ID_PATTERN, message = "screeningId must match uuid pattern")
     private String screeningId;
@@ -21,8 +22,8 @@ public class ReservationRequest { //todo add custom validator to check, if field
     private String surname;
 
 
-    @NotEmpty(message = "seats map cannot be empty")
-    Map<@Positive(message = "row number must be positive") Long, @NotNull(message = "seat row info must be set") SeatReservation> seats;
+    @Size(min = 1, message = "seats map cannot be empty")
+    Map<@Positive(message = "row number must be positive") Long, @NotNull(message = "seat row info must be set") @Valid SeatReservation> seats;
 
     @Override
     public String toString() {
@@ -43,7 +44,7 @@ public class ReservationRequest { //todo add custom validator to check, if field
         @Positive(message = "first seat number must be positive")
         private int first;
 
-        @NotEmpty(message = "reservation types must not be empty")
+        @Size(min = 1, message = "reservation types must not be empty")
         private List<SeatType> types;
 
         public int getFirst() {

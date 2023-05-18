@@ -58,16 +58,16 @@ public class ReservationService extends BaseService<Reservation, ReservationRepo
         List<Seat> result = new ArrayList<>();
 
         seatReservationMap.forEach((rowPosition, seatRequest) -> {
+            SeatsRow seatsRow = getSeatsRowWithPosition(screening.getSeatsRows(), rowPosition);
+
             int first = seatRequest.getFirst();
             List<SeatType> types = seatRequest.getTypes();
             int size = types.size();
-            int last = size + first;
-
-            SeatsRow seatsRow = getSeatsRowWithPosition(screening.getSeatsRows(), rowPosition);
+            int last = size + first - 1;
 
             List<Seat> seats = seatsRow.getSeats();
             if (last > seats.size()) {
-                String msg = "Too many seats in row " + rowPosition + ": received request to reserve seats in range [" + first + "," + last + "], last seat number = " + (seats.size() + 1);
+                String msg = "Too many seats in row " + rowPosition + ": received request to reserve seats in range [" + first + "," + last + "], last seat number = " + (seats.size());
                 logger.info(msg);
                 throw new BadReservationRequestException(msg);
             }
@@ -76,7 +76,7 @@ public class ReservationService extends BaseService<Reservation, ReservationRepo
             for (int i = 0; i < size; i++) {
                 Seat seat = seats.get(first);
                 if (seat.getReservation() != null) {
-                    String msg = seat + " is already taken";
+                    String msg = "seat{row=" + rowPosition + ",number=" + seat.getPosition() + "} is already taken";
                     logger.info(msg);
                     throw new BadReservationRequestException(msg);
                 }
