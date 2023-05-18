@@ -34,6 +34,7 @@ public class MovieController extends BaseControllerWithGetOne<Movie, MovieReposi
     private final MovieWithScreeningsModelAssembler movieWithScreeningsModelAssembler;
     private final PagedResourcesAssembler<MovieWithScreeningsModel> movieWithScreeningsPagedResourcesAssembler;
     private final ScreeningService screeningService;
+
     protected MovieController(MovieService service, PagedResourcesAssembler<Movie> pagedResourcesAssembler, MovieModelAssembler modelAssembler, MovieWithScreeningsModelAssembler movieWithScreeningsModelAssembler, PagedResourcesAssembler<MovieWithScreeningsModel> movieWithScreeningsPagedResourcesAssembler, ScreeningService screeningService) {
         super(LoggerFactory.getLogger(MovieController.class), service, pagedResourcesAssembler, modelAssembler);
         this.movieWithScreeningsModelAssembler = movieWithScreeningsModelAssembler;
@@ -48,6 +49,7 @@ public class MovieController extends BaseControllerWithGetOne<Movie, MovieReposi
         if (end == null)
             end = ControllerDefaults.END;
         end = end.minus(ReservationService.PRE_SCREENING_DURATION, ChronoUnit.MINUTES);
+        logger.info("Received get request for all movies where screenings{start=" + start + ", end=" + end + "}, page=" + page + ", size=" + size);
         Sort sort = Sort.by("movie.title").ascending().and(Sort.by("screeningTime").ascending());
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Screening> screenings = screeningService.findAllBetween(start, end, pageable);

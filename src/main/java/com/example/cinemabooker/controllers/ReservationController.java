@@ -41,13 +41,8 @@ public class ReservationController extends BaseControllerWithGetOne<Reservation,
                     .badRequest()
                     .body(e.getMessage());
         }
+        logger.info("Post response: " + response);
 
         return response;
-
-//        EntityModel<Reservation> entityModel = modelAssembler.toModel(service.create(reservationForm));
-
-//        return ResponseEntity
-//                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-//                .body(entityModel);
     }
 }
