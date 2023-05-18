@@ -3,12 +3,18 @@ package com.example.cinemabooker.controllers;
 import com.example.cinemabooker.controllers.representation.assemblers.ScreeningModelAssembler;
 import com.example.cinemabooker.controllers.representation.assemblers.ScreeningWithSeatsModelAssembler;
 import com.example.cinemabooker.controllers.representation.models.ScreeningWithSeatsModel;
+import com.example.cinemabooker.model.Movie;
+import com.example.cinemabooker.model.Room;
 import com.example.cinemabooker.model.Screening;
+import com.example.cinemabooker.repositories.MovieRepository;
 import com.example.cinemabooker.repositories.ScreeningRepository;
+import com.example.cinemabooker.services.MovieService;
 import com.example.cinemabooker.services.ReservationService;
+import com.example.cinemabooker.services.RoomService;
 import com.example.cinemabooker.services.ScreeningService;
 import org.hibernate.Hibernate;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +54,7 @@ public class ScreeningController extends BaseController<Screening, ScreeningRepo
             Pageable pageable = PageRequest.of(page, size, sort);
             screenings = service.findAll(pageable, start, end);
         } else {
+            logger.info("Received request to get all screenings={movieId=" + movieId + "}");
             Pageable pageable = PageRequest.of(page, size);
             screenings = service.findAll(movieId, pageable);
         }
@@ -60,5 +67,19 @@ public class ScreeningController extends BaseController<Screening, ScreeningRepo
         logger.info("Received request get one entity: id=" + id);
         Screening entity = service.findAndFetchSeats(id);
         return screeningWithSeatsModelAssembler.toModel(entity);
+    }
+    @Autowired
+    private  MovieService movieService;
+
+    @Autowired
+    private RoomService roomService;
+
+    @PostMapping("/create_late")
+    public EntityModel<Screening> createLateScreening() {
+        logger.info("Creating late screening");
+        Movie movie = movieService.findAll().get(0);
+        Room room = roomService.findAll().get(0);
+        Screening screening = service.createScreening(movie, room, Instant.now().minus(4* ReservationService.PRE_SCREENING_DURATION, ChronoUnit.MINUTES), 5, 6);
+        return modelAssembler.toModel(screening);
     }
 }

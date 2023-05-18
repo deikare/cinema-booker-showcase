@@ -380,3 +380,56 @@ echo -e "\n"
 echo "screening after bad reservation request:"
 curl "$random_screening_link" -s
 echo ""
+
+prompt "Bonus test: creating late screening and trying to reserve seats"
+
+response=$(curl -X POST "$server_address/screenings/create_late" -s)
+echo "$response"
+new_screening_link=$(echo "$response" | jq -r '._links.self.href')
+screening_id=$(basename "$new_screening_link")
+response=$(curl "$new_screening_link" -s)
+
+smallest_row=$(echo "$response" | jq '.seatRows | min_by(.row) | .row')
+result=$(first_and_last_seat "$response" "$smallest_row")
+first_sm=$(echo "$result" | awk '{print $1}')
+last_sm=$(echo "$result" | awk '{print $2}')
+types_sm=$(generate_types_array "$((last_sm - first_sm + 1))")
+
+largest_row=$(echo "$response" | jq '.seatRows | max_by(.row) | .row')
+result=$(first_and_last_seat "$response" "$largest_row")
+first_l=$(echo "$result" | awk '{print $1}')
+last_l=$(echo "$result" | awk '{print $2}')
+types_l=$(generate_types_array "$((last_l - first_l + 1))")
+
+request="{
+  \"screeningId\": \"$screening_id\",
+  \"name\": \"Wacław\",
+  \"surname\": \"Wąchocki-Mińkowski\",
+  \"seats\": {
+    \"$smallest_row\": {
+      \"first\": $first_sm,
+      \"types\": $types_sm
+    },
+    \"$largest_row\": {
+      \"first\": $first_l,
+      \"types\": $types_l
+    }
+  }
+}
+"
+
+echo "request:"
+echo "$request"
+url="$server_address/reservations"
+echo ""
+echo "screening before reservation: "
+curl "$new_screening_link" -s
+echo ""
+
+echo "response:"
+curl -X POST -H "Content-Type: application/json" --data "$request" "$url"
+echo -e "\n"
+
+echo "screening after reservation: "
+curl "$new_screening_link" -s
+echo -e "\n"

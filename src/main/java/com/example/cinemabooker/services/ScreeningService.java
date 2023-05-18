@@ -4,6 +4,7 @@ import com.example.cinemabooker.model.*;
 import com.example.cinemabooker.repositories.ScreeningRepository;
 import com.example.cinemabooker.services.exceptions.NotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import java.time.Instant;
 import java.util.function.Function;
 
 @Service
+@Transactional
 public class ScreeningService extends BaseServiceWithUpdate<Screening, ScreeningRepository> {
     private final SeatsRowService seatsRowService;
     private final SeatService seatService;
