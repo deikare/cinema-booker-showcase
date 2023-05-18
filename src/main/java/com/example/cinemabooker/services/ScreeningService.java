@@ -60,12 +60,12 @@ public class ScreeningService extends BaseServiceWithUpdate<Screening, Screening
                 });
     }
 
-    private Screening createScreening(Movie movie, Room room, Instant screeningTime, int rowsNumber, Function<Integer, Integer> seatsInRowNumberSupplier) {
+    private Screening createScreening(Movie movie, Room room, Instant screeningTime, int rowsNumber, Function<Integer, Integer> numberOfSeatsInRowSupplier) {
         Screening screening = new Screening(movie, room, screeningTime);
         screening = repository.save(screening);
 
         for (int rowNumber = 1; rowNumber <= rowsNumber; rowNumber++)
-            createRowWithSeats(screening, rowNumber, seatsInRowNumberSupplier.apply(rowNumber));
+            createRowWithSeats(screening, rowNumber, numberOfSeatsInRowSupplier.apply(rowNumber));
 
         return repository.save(screening);
     }
