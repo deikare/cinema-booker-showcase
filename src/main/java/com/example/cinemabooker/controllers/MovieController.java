@@ -7,6 +7,7 @@ import com.example.cinemabooker.model.Movie;
 import com.example.cinemabooker.model.Screening;
 import com.example.cinemabooker.repositories.MovieRepository;
 import com.example.cinemabooker.services.MovieService;
+import com.example.cinemabooker.services.ReservationService;
 import com.example.cinemabooker.services.ScreeningService;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.*;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -44,7 +46,8 @@ public class MovieController extends BaseControllerWithGetOne<Movie, MovieReposi
         if (start == null)
             start = Instant.EPOCH;
         if (end == null)
-            end = Instant.now();
+            end = ControllerDefaults.END;
+        end = end.minus(ReservationService.PRE_SCREENING_DURATION, ChronoUnit.MINUTES);
         Sort sort = Sort.by("movie.title").ascending().and(Sort.by("screeningTime").ascending());
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Screening> screenings = screeningService.findAllBetween(start, end, pageable);

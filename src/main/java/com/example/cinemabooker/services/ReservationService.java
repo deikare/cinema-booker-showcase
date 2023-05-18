@@ -28,15 +28,22 @@ public class ReservationService extends BaseService<Reservation, ReservationRepo
         this.screeningRepository = screeningRepository;
     }
 
+    public static final long PRE_SCREENING_DURATION = 15L;
+
     @Transactional
     public Reservation validateAndSaveReservation(ReservationRequest reservationRequest) throws BadReservationRequestException {
         String screeningId = reservationRequest.getScreeningId();
 
         Screening screening = findFetchedScreening(screeningId);
 
-        Instant expirationTime = screening.getScreeningTime().minus(15, ChronoUnit.MINUTES);
+        Instant threshold = screening.getScreeningTime().minus(PRE_SCREENING_DURATION, ChronoUnit.MINUTES);
+        if (Instant.now().isAfter(threshold)) {
+            String msg = "Request has been sent too late, timestamp limit was: " + threshold;
+            logger.info(msg);
+            throw new BadReservationRequestException(msg);
+        }
 
-        Reservation reservation = new Reservation(screening, expirationTime, reservationRequest.getName(), reservationRequest.getSurname());
+        Reservation reservation = new Reservation(screening, reservationRequest.getName(), reservationRequest.getSurname());
 
         List<Seat> seatsToSave = getSeatsWithUpdatedReservation(reservationRequest.getSeats(), reservation, screening);
 
