@@ -8,14 +8,18 @@ import com.example.cinemabooker.services.ReservationService;
 import com.example.cinemabooker.services.exceptions.BadReservationRequestException;
 import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/reservations")
@@ -25,7 +29,13 @@ public class ReservationController extends BaseControllerWithGetOne<Reservation,
     }
 
     @PostMapping
-    public ResponseEntity<?> newEntity(@RequestBody @Valid ReservationRequest reservationRequest) {
+    public ResponseEntity<?> newEntity(@RequestBody @Valid ReservationRequest reservationRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String msg = bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(", "));
+
+            logger.info("Received request post, invalid request: " + msg);
+            throw new BadReservationRequestException(msg);
+        }
         logger.info("Received request post " + reservationRequest);
         Reservation reservation;
         ResponseEntity<?> response;
