@@ -18,7 +18,7 @@ prompt() {
   echo -e "$formatted_message"
 }
 
-prompt "Step 2"
+prompt "Step 2 - The system lists movies available in the given time interval - title and screening times."
 echo ""
 
 prompt -s "A: wrong time interval, start one year in the future from now"
@@ -32,23 +32,17 @@ end="1970-01-01T${utc_time}Z"
 curl "$server_address/movies?end=$end"
 echo -e "\n"
 
-prompt -s "C: proper request - start one hour in the future from now"
-start=$(date -u -d "+1 hour" +'%Y-%m-%dT%H:%M:%SZ')
-curl "$server_address/movies?start=$start"
+prompt -s "C: proper request - end +3 hour from now"
+end=$(date -u -d "+3 hour" +'%Y-%m-%dT%H:%M:%SZ')
+curl "$server_address/movies?end=$end"
 echo -e "\n"
 
-page=1
-size=2
-prompt -s "D: proper request - same start, page=$page, size=$size"
-curl "$server_address/movies?start=$start&page=$page&size=$size"
-echo -e "\n"
-
-prompt -s "E: proper request - no time bounds"
+prompt -s "D: proper request - no time bounds"
 response=$(curl "$server_address/movies" -s)
 echo "$response"
 echo -e "\n"
 
-prompt "Step 4"
+prompt "Step 4 - The system gives information regarding screening room (randomly chosen) and available seats."
 echo ""
 
 prompt -s "Screening info:"
@@ -94,7 +88,7 @@ generate_types_array() {
   echo "$string"
 }
 
-prompt "Step 5"
+prompt "Step 5 - user sends reservation"
 echo ""
 
 prompt -s "A1 bad request: name with numbers"

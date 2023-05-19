@@ -14,5 +14,5 @@ public final class ControllerDefaults {
     public static final String PAGE_SIZE_AS_STRING = "5";
     public static final String ALL_LINK_REL = "all";
 
-    public static final Instant END = Instant.now().plus(24L, ChronoUnit.HOURS);
+    public static final Instant END = Instant.now().plus(24L, ChronoUnit.DAYS);
 }

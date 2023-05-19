@@ -16,12 +16,13 @@ prompt() {
   echo -e "$formatted_message"
 }
 
-#prompt "compile"
-#mvn package
-#echo -e "\n"
-#
-#prompt "run server"
-#java -jar ./target/cinema-booker-0.0.1-SNAPSHOT.jar
+prompt "clean"
 mvn clean
+echo -e "\n"
+
+prompt "compile"
 mvn package
-mvn spring-boot:run -Drun.jvmArguments="-Dfile.encoding=UTF-8"
+echo -e "\n"
+
+prompt "run server"
+java -jar ./target/cinema-booker-0.0.1-SNAPSHOT.jar
